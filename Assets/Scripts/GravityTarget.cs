@@ -7,6 +7,7 @@ using UnityEngine;
 public class GravityTarget : MonoBehaviour
 {
     private Rigidbody2D rigidBody;
+    private FixedJoint2D joint;
 
     public bool isAttractee;
     public bool isAttractor;
@@ -33,6 +34,10 @@ public class GravityTarget : MonoBehaviour
     void FixedUpdate()
     {
         SetGravityState(!isColliding);
+        if (joint != null)
+        {
+            joint.autoConfigureConnectedAnchor = false;
+        }
     }
 
     void OnEnable()
@@ -52,20 +57,22 @@ public class GravityTarget : MonoBehaviour
             isColliding = true;
             SetAsAttractee(false);
 
+            rigidBody.velocity = Vector3.zero;
+            rigidBody.angularVelocity = 0;
+
             var collidedRigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
 
-            var joint = gameObject.AddComponent<FixedJoint2D>();
+            joint = gameObject.AddComponent<FixedJoint2D>();
             joint.connectedBody = collidedRigidbody;
-            joint.breakForce = 0.5f;
+            joint.breakForce = 0.1f;
             joint.enableCollision = true;
             joint.autoConfigureConnectedAnchor = true;
 
             //double massProduct = rigidBody.mass * collidedRigidbody.mass;
             //Vector3 difference = rigidBody.position - collidedRigidbody.position;
-            //float distance = difference.magnitude; 
+            //float distance = difference.magnitude;
             //double unScaledforceMagnitude = massProduct / Math.Pow(distance, 2);
             //double forceMagnitude = 1 * unScaledforceMagnitude;
-
             //joint.breakForce = (float)forceMagnitude;
         }
     }

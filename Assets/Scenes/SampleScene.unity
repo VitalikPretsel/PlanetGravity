@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a6423ba5e6c59346a7baed0f461ac85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateVelocityValue: 0.01
+  updateVelocityValue: 0.005
   handleVelocity: 1
 --- !u!1 &816165336
 GameObject:
