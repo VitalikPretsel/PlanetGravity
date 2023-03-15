@@ -467,6 +467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateVelocityValue: 0.005
+  maxUpdateVelocityValue: 0.01
   handleVelocity: 1
 --- !u!1 &816165336
 GameObject:

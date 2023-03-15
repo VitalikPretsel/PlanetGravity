@@ -10,7 +10,8 @@ public class RocketHandler : MonoBehaviour
     private ParticleSystem particleSys;
 
     public float updateVelocityValue;
-
+    public float maxUpdateVelocityValue;
+    
     public bool handleVelocity;
 
     void Awake()
@@ -24,9 +25,9 @@ public class RocketHandler : MonoBehaviour
     {
         if (handleVelocity)
         {
-            if (Input.GetKey(KeyCode.Q))
+            if (Input.GetKey(KeyCode.Q) && updateVelocityValue > 0)
                 updateVelocityValue -= 0.0001f;
-            else if (Input.GetKey(KeyCode.E))
+            else if (Input.GetKey(KeyCode.E) && updateVelocityValue < maxUpdateVelocityValue)
                 updateVelocityValue += 0.0001f;
 
             float x = 0, y = 0;
@@ -45,7 +46,7 @@ public class RocketHandler : MonoBehaviour
 
             if (!vector.Equals(Vector3.zero))
             {
-                main.startLifetime = 0.5f;
+                main.startLifetime = (updateVelocityValue / maxUpdateVelocityValue) * 0.5f;
                 rigidBody.AddForce(updateVelocityValue * vector, ForceMode2D.Impulse);
 
                 float particleAngle;
