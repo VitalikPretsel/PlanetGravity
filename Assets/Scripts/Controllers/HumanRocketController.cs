@@ -5,21 +5,21 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class HumanRocketController : MonoBehaviour
 {
-    private RocketHandler rocketHandler;
+    private RocketTarget rocketTarget;
 
     void Awake()
     {
-        rocketHandler = this.GetComponent<RocketHandler>();
+        rocketTarget = this.GetComponent<RocketTarget>();
     }
 
     void FixedUpdate()
     {
-        if (rocketHandler.handleVelocity)
+        if (rocketTarget.handleVelocity)
         {
-            if (Input.GetKey(KeyCode.Q) && rocketHandler.updateVelocityValue > 0)
-                rocketHandler.updateVelocityValue -= 0.0001f;
-            else if (Input.GetKey(KeyCode.E) && rocketHandler.updateVelocityValue < rocketHandler.maxUpdateVelocityValue)
-                rocketHandler.updateVelocityValue += 0.0001f;
+            if (Input.GetKey(KeyCode.Q) && rocketTarget.updateVelocityValue > 0)
+                rocketTarget.updateVelocityValue -= 0.0001f;
+            else if (Input.GetKey(KeyCode.E) && rocketTarget.updateVelocityValue < rocketTarget.maxUpdateVelocityValue)
+                rocketTarget.updateVelocityValue += 0.0001f;
 
             float x = 0, y = 0;
             if (Input.GetKey(KeyCode.DownArrow))
@@ -31,7 +31,7 @@ public class HumanRocketController : MonoBehaviour
             if (Input.GetKey(KeyCode.RightArrow))
                 x = 1;
 
-            rocketHandler.moveVector = new Vector3(x, y, 0);
+            rocketTarget.moveVector = new Vector3(x, y, 0);
         }
     }
 }

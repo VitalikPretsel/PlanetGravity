@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class RocketHandler : MonoBehaviour
+public class RocketTarget : MonoBehaviour
 {
     private Rigidbody2D rigidBody;
     private GameObject particle;
