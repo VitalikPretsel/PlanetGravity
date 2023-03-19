@@ -14,6 +14,8 @@ public class RocketHandler : MonoBehaviour
     
     public bool handleVelocity;
 
+    public Vector3 moveVector;
+
     void Awake()
     {
         rigidBody = this.GetComponent<Rigidbody2D>();
@@ -25,56 +27,58 @@ public class RocketHandler : MonoBehaviour
     {
         if (handleVelocity)
         {
-            if (Input.GetKey(KeyCode.Q) && updateVelocityValue > 0)
-                updateVelocityValue -= 0.0001f;
-            else if (Input.GetKey(KeyCode.E) && updateVelocityValue < maxUpdateVelocityValue)
-                updateVelocityValue += 0.0001f;
+            ChangeRocketVelocity();
+            ChangeFireParticle();
+            ChangeRocketDirection();
+        }
+    }
 
-            float x = 0, y = 0;
-            if (Input.GetKey(KeyCode.DownArrow))
-                y = -1;
-            if (Input.GetKey(KeyCode.UpArrow))
-                y = 1;
-            if (Input.GetKey(KeyCode.LeftArrow))
-                x = -1;
-            if (Input.GetKey(KeyCode.RightArrow))
-                x = 1;
+    void ChangeRocketVelocity()
+    {
+        if (!moveVector.Equals(Vector3.zero))
+        {
+            rigidBody.AddForce(updateVelocityValue * moveVector, ForceMode2D.Impulse);
+        }
+    }
 
-            Vector3 vector = new Vector3(x, y, 0);
+    // cosmetic
+    void ChangeFireParticle()
+    {
+        var main = particleSys.main;
 
-            var main = particleSys.main;
+        if (!moveVector.Equals(Vector3.zero))
+        {
+            main.startLifetime = (updateVelocityValue / maxUpdateVelocityValue) * 0.5f;
 
-            if (!vector.Equals(Vector3.zero))
+            float particleAngle;
+
+            particleAngle = Mathf.Atan2(moveVector.y, moveVector.x) * Mathf.Rad2Deg;
+            var quat1 = Quaternion.AngleAxis(particleAngle, Vector3.up);
+
+            if (moveVector.y < 0)
             {
-                main.startLifetime = (updateVelocityValue / maxUpdateVelocityValue) * 0.5f;
-                rigidBody.AddForce(updateVelocityValue * vector, ForceMode2D.Impulse);
-
-                float particleAngle;
-
-                particleAngle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
-                var quat1 = Quaternion.AngleAxis(particleAngle, Vector3.up);
-
-                if (vector.y < 0)
-                {
-                    vector.y *= -1;
-                }
-
-                particleAngle = Mathf.Atan2(vector.x, vector.y) * Mathf.Rad2Deg;
-                var quat2 = Quaternion.AngleAxis(particleAngle, Vector3.right);
-
-                particle.transform.rotation = quat1 * quat2;
-            }
-            else
-            {
-                main.startLifetime = 0f;
+                moveVector.y *= -1;
             }
 
-            Vector2 moveDirection = rigidBody.velocity;
-            if (moveDirection != Vector2.zero)
-            {
-                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            }
+            particleAngle = Mathf.Atan2(moveVector.x, moveVector.y) * Mathf.Rad2Deg;
+            var quat2 = Quaternion.AngleAxis(particleAngle, Vector3.right);
+
+            particle.transform.rotation = quat1 * quat2;
+        }
+        else
+        {
+            main.startLifetime = 0f;
+        }
+    }
+
+    // cosmetic
+    void ChangeRocketDirection()
+    {
+        Vector2 moveDirection = rigidBody.velocity;
+        if (moveDirection != Vector2.zero)
+        {
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
     }
 }
