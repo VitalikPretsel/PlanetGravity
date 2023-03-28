@@ -15,7 +15,6 @@ public class NeuralNetwork
 
     public int NumLayers(){
         return layers.Count;
-
     }
 
     // Constructor creates a random NN with specified layer structure 

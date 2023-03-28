@@ -11,8 +11,8 @@ public class GravityHandler : MonoBehaviour
     public static bool isSimulatingLive = true;
 
     //in physical universe every body would be both attractor and attractee
-    public static List<Rigidbody2D> attractors = new List<Rigidbody2D>();
-    public static List<Rigidbody2D> attractees = new List<Rigidbody2D>();
+    public static List<GravityTarget> attractors = new List<GravityTarget>();
+    public static List<GravityTarget> attractees = new List<GravityTarget>();
 
     void FixedUpdate()
     {
@@ -25,13 +25,19 @@ public class GravityHandler : MonoBehaviour
 
     public static void SimulateGravities()
     {
-        foreach (Rigidbody2D attractor in attractors)
+        foreach (GravityTarget attractor in attractors)
         {
-            foreach (Rigidbody2D attractee in attractees)
+            foreach (GravityTarget attractee in attractees)
             {
                 if (attractor != attractee)
                 {
-                    AddGravityForce(attractor, attractee);
+                    var dist = Vector3.Distance(attractor.rigidBody.position, attractee.rigidBody.position);
+
+                    if (dist > attractor.GetComponent<Collider2D>().bounds.size.x && dist > attractor.GetComponent<Collider2D>().bounds.size.y
+                        && dist > attractee.GetComponent<Collider2D>().bounds.size.x && dist > attractee.GetComponent<Collider2D>().bounds.size.y)
+                    {
+                        AddGravityForce(attractor.rigidBody, attractee.rigidBody);
+                    }
                 }
             }
         }

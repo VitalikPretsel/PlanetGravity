@@ -10,7 +10,10 @@ public class TimeHandler : MonoBehaviour
 
     void FixedUpdate()
     {
-        Time.timeScale = timeScale;
+        if (timeScale >= 0)
+        {
+            Time.timeScale = timeScale;
+        }
         time += 0.02f;
     }
 }

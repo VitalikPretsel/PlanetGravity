@@ -6,21 +6,27 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class GravityTarget : MonoBehaviour
 {
-    private Rigidbody2D rigidBody;
+    public Rigidbody2D rigidBody;
     private FixedJoint2D joint;
+    private TrailRenderer trailRenderer;
 
     public bool isAttractee;
     public bool isAttractor;
 
+    public Vector3 startingPosition;
     public Vector3 initialVelocity;
     public bool applyInitialVelocityOnStart;
-    
-    public bool handleColliding;
+
+    public bool handleCollidingVelocity;
+    public bool handleCollidingGravity;
+    public bool handleCollidingJoint;
+
     public bool isColliding;
 
     void Awake()
     {
         rigidBody = this.GetComponent<Rigidbody2D>();
+        trailRenderer = this.transform.Find("MapIcon").gameObject.GetComponent<TrailRenderer>();
     }
 
     void Start()
@@ -52,21 +58,28 @@ public class GravityTarget : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (handleColliding)
+        if (handleCollidingGravity)
         {
             isColliding = true;
             SetAsAttractee(false);
-
+        }
+        if (handleCollidingVelocity)
+        {
             rigidBody.velocity = Vector3.zero;
             rigidBody.angularVelocity = 0;
-
+        }
+        if (handleCollidingJoint)
+        {
             var collidedRigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
 
-            joint = gameObject.AddComponent<FixedJoint2D>();
-            joint.connectedBody = collidedRigidbody;
-            joint.breakForce = 0.1f;
-            joint.enableCollision = true;
-            joint.autoConfigureConnectedAnchor = true;
+            if (joint == null)
+            {
+                joint = gameObject.AddComponent<FixedJoint2D>();
+                joint.connectedBody = collidedRigidbody;
+                joint.breakForce = 0.1f;
+                joint.enableCollision = true;
+                joint.autoConfigureConnectedAnchor = true;
+            }
 
             //double massProduct = rigidBody.mass * collidedRigidbody.mass;
             //Vector3 difference = rigidBody.position - collidedRigidbody.position;
@@ -79,9 +92,10 @@ public class GravityTarget : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (handleColliding)
+        isColliding = false;
+
+        if (handleCollidingGravity)
         {
-            isColliding = false;
             SetAsAttractee(isAttractee);
         }
     }
@@ -95,30 +109,43 @@ public class GravityTarget : MonoBehaviour
     {
         if (value)
         {
-            if (!GravityHandler.attractees.Contains(this.GetComponent<Rigidbody2D>()))
+            if (!GravityHandler.attractees.Contains(this))
             {
-                GravityHandler.attractees.Add(rigidBody);
+                GravityHandler.attractees.Add(this);
             }
-
         }
         else
         {
-            GravityHandler.attractees.Remove(rigidBody);
+            GravityHandler.attractees.Remove(this);
         }
+    }
+
+    public void ResetPosition()
+    {
+        rigidBody.position = startingPosition;
+
+        joint = null;
+        isColliding = false;
+        SetAsAttractee(isAttractee);
+        
+        rigidBody.velocity = Vector3.zero;
+        ApplyVelocity(initialVelocity);
+
+        trailRenderer.Clear();
     }
 
     void SetAsAttractor(bool value)
     {
         if (value)
         {
-            if (!GravityHandler.attractors.Contains(this.GetComponent<Rigidbody2D>()))
+            if (!GravityHandler.attractors.Contains(this))
             {
-                GravityHandler.attractors.Add(rigidBody);
+                GravityHandler.attractors.Add(this);
             }
         }
         else
         {
-            GravityHandler.attractors.Remove(rigidBody);
+            GravityHandler.attractors.Remove(this);
         }
     }
 

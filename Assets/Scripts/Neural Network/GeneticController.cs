@@ -20,7 +20,7 @@ public class GeneticController
 
         for (int i = 0; i < popSize; i++){
             // Create NN with specific structure
-            this.population.Add(new NeuralNetwork(new int[] {6,5,2}));
+            this.population.Add(new NeuralNetwork(new int[] {8,7,3}));
         }
     }
 
@@ -28,24 +28,26 @@ public class GeneticController
     public void Crossover(List<double> mother, List<double> father){
         List<double> tempM = new List<double>();
         List<double> tempF = new List<double>();
-        for (int i = 0; i < mother.Count; i++){
+        for (int i = 0; i < mother.Count; i++)
+        {
             // Swap Genes
-            if (UnityEngine.Random.Range(0, 1f) > .5){
+            if (UnityEngine.Random.Range(0, 1f) > .5)
+            {
                 tempM.Add(father[i]);
                 tempF.Add(mother[i]);
-            }else{ // Don't swap genes
+            }
+            else
+            { // Don't swap genes
                 tempM.Add(mother[i]);
                 tempF.Add(father[i]);
             }
-
-
         }
+
         mother.RemoveRange(0, mother.Count);
         father.RemoveRange(0, mother.Count);
 
         mother.InsertRange(0, tempF);
         father.InsertRange(0, tempM);
-
     }
 
     // Crossover two Neural networks and return 2 new neural network children
@@ -76,7 +78,6 @@ public class GeneticController
         }
 
         creature.Decode(chromosome);
-
     }
 
     // Creates next generation through Roulette wheel selection
@@ -175,7 +176,4 @@ public class GeneticController
             population[i] = nextGeneration[i];
         }
     }// End NextGeneration()
-
-
-
 }
