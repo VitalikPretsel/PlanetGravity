@@ -7,6 +7,7 @@ public class RocketTarget : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
     private GameObject particle;
+    private GameObject rocketIcon;
     private ParticleSystem particleSys;
 
     public float updateVelocityValue;
@@ -34,6 +35,7 @@ public class RocketTarget : MonoBehaviour
     void Awake()
     {
         rigidBody = this.GetComponent<Rigidbody2D>();
+        rocketIcon = this.transform.Find("MapIcon").gameObject;
         particle = this.transform.Find("FlameParticles").gameObject;
         particleSys = particle.GetComponent<ParticleSystem>();
         previousPosition = rigidBody.position;
@@ -48,8 +50,9 @@ public class RocketTarget : MonoBehaviour
         if (handleVelocity)
         {
             ChangeRocketVelocity();
-            ChangeFireParticle();
             ChangeRocketDirection();
+            //ChangeMapIconDirection();
+            ChangeFireParticle();
         }
     }
 
@@ -131,8 +134,7 @@ public class RocketTarget : MonoBehaviour
         away = false;
         crushed = false;
 
-        float angle = Mathf.Atan2(0, 1) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
     }
 
     // cosmetic
@@ -147,7 +149,7 @@ public class RocketTarget : MonoBehaviour
             float particleAngle;
 
             particleAngle = Mathf.Atan2(moveVector.y, moveVector.x) * Mathf.Rad2Deg;
-            var quat1 = Quaternion.AngleAxis(particleAngle, Vector3.up);
+            var quat1 = Quaternion.AngleAxis(particleAngle, Vector3.right);
 
             if (moveVector.y < 0)
             {
@@ -155,7 +157,7 @@ public class RocketTarget : MonoBehaviour
             }
 
             particleAngle = Mathf.Atan2(moveVector.x, moveVector.y) * Mathf.Rad2Deg;
-            var quat2 = Quaternion.AngleAxis(particleAngle, Vector3.right);
+            var quat2 = Quaternion.AngleAxis(particleAngle, Vector3.down);
 
             particle.transform.rotation = quat1 * quat2;
         }
@@ -171,8 +173,9 @@ public class RocketTarget : MonoBehaviour
         Vector2 moveDirection = rigidBody.velocity;
         if (moveDirection != Vector2.zero)
         {
-            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            float angle = Mathf.Atan2(-moveDirection.x, moveDirection.y) * Mathf.Rad2Deg;
+            //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            rigidBody.MoveRotation(Quaternion.AngleAxis(angle, Vector3.forward));
         }
     }
 }

@@ -4837,14 +4837,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026480335244218973}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.0008970499, y: 0.0000018388436, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10.743144, y: 10.743144, z: 0.0013988466}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1026480336076205482}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1026480335244218968
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5142,7 +5142,9 @@ MonoBehaviour:
   startingPosition: {x: 0, y: 0.65, z: 0}
   initialVelocity: {x: 0, y: 0, z: 0}
   applyInitialVelocityOnStart: 1
-  handleColliding: 0
+  handleCollidingVelocity: 0
+  handleCollidingGravity: 0
+  handleCollidingJoint: 0
   isColliding: 0
 --- !u!114 &1026480336076205483
 MonoBehaviour:
