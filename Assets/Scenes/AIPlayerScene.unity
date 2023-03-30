@@ -164,6 +164,7 @@ MonoBehaviour:
   cameraTarget: {fileID: 925159474}
   bestGenomeFitness: 0
   bestRocket: {fileID: 0}
+  Network_GUI: {fileID: 7079019132684391397, guid: 25f9c8b078b564ac98677da3a1b2d088, type: 3}
 --- !u!4 &351216995
 Transform:
   m_ObjectHideFlags: 0
@@ -655,7 +656,9 @@ MonoBehaviour:
   startingPosition: {x: 40.57, y: 0, z: 0}
   initialVelocity: {x: 0, y: 878, z: 0}
   applyInitialVelocityOnStart: 1
-  handleColliding: 0
+  handleCollidingVelocity: 0
+  handleCollidingGravity: 0
+  handleCollidingJoint: 0
   isColliding: 0
 --- !u!58 &1263217143
 CircleCollider2D:
@@ -1324,7 +1327,9 @@ MonoBehaviour:
   startingPosition: {x: 0, y: 0, z: 0}
   initialVelocity: {x: 0, y: 0, z: 0}
   applyInitialVelocityOnStart: 1
-  handleColliding: 0
+  handleCollidingVelocity: 0
+  handleCollidingGravity: 0
+  handleCollidingJoint: 0
   isColliding: 0
 --- !u!58 &1884565191
 CircleCollider2D:

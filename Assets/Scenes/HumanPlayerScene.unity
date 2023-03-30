@@ -5437,7 +5437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 0}
-  isAttractee: 0
+  isAttractee: 1
   isAttractor: 0
   startingPosition: {x: 0, y: 0, z: 0}
   initialVelocity: {x: 0, y: 0, z: 0}

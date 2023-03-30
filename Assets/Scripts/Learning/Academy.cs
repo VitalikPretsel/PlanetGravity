@@ -26,6 +26,9 @@ public class Academy : MonoBehaviour
     public float bestGenomeFitness;
     public AIRocketController bestRocket;
 
+    public GameObject Network_GUI;
+    private UI_Network networkUI;
+
     void Start()
     {
         species = new GeneticController(numGenomes, mutationRate);
@@ -41,6 +44,12 @@ public class Academy : MonoBehaviour
 
         currentGenome = numSimulate;
         batchSimulate = numSimulate;
+
+        Network_GUI = Instantiate(Network_GUI);
+        UI_Genetics genetics = Network_GUI.GetComponentInChildren<UI_Genetics>();
+        genetics.academy = this;
+        networkUI = Network_GUI.GetComponentInChildren<UI_Network>();
+        networkUI.Display(rocketControllers[0].network);
     }
 
     void FixedUpdate()
@@ -58,11 +67,14 @@ public class Academy : MonoBehaviour
                 if (rocket.fitness > bestCarFitness)
                 {
                     bestCarFitness = rocket.fitness;
+                    bestRocket = rocket;
+
                     cameraTarget.target = rocket.transform;
+                    networkUI.DrawConnections(rocket.network);
+
                     if (rocket.fitness > bestGenomeFitness)
                     {
                         bestGenomeFitness = rocket.fitness;
-                        bestRocket = rocket;
                     }
                 }
             }
