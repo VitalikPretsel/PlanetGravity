@@ -101,7 +101,6 @@ public class GeneticController
 
         // Sort population list by fitness ratio
         population.Sort((x, y) => y.fitnessRatio.CompareTo(x.fitnessRatio));
-        population[0].Save();
 
         //Save the best creature for next gen
         nextGeneration.Add(population[0]);

@@ -177,8 +177,8 @@ public class NeuralNetwork
     }// End run
 
     // Saves the encoded genes to a file
-    public void Save(){
-        StreamWriter write = new StreamWriter("./nn" + (int)this.fitness + ".txt", true);
+    public void Save(int network_number){
+        StreamWriter write = new StreamWriter("./Saves/NetworkSaves/nn" + network_number + ".txt", true);
 
         // Write out layer structure
         for (int i = 0; i < layerStructure.Length-1; i++){

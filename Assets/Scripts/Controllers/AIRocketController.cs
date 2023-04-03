@@ -87,14 +87,7 @@ public class AIRocketController : MonoBehaviour
         rocket.rigidBody.isKinematic = true;
         rocket.rigidBody.velocity = Vector3.zero;
 
-        if (network.fitness == 0)
-        {
-            network.fitness = fitness;
-        }
-        else
-        {
-            network.fitness = (network.fitness + fitness) / 2;
-        }
+        network.fitness += fitness;
     }
 
     public void Reset()

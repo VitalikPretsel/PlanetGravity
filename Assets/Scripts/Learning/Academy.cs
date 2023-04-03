@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class Academy : MonoBehaviour
@@ -31,6 +33,8 @@ public class Academy : MonoBehaviour
 
     void Start()
     {
+        EmptySaves();
+
         species = new GeneticController(numGenomes, mutationRate);
         rockets = new GameObject[numSimulate];
         rocketControllers = new AIRocketController[numSimulate];
@@ -55,7 +59,7 @@ public class Academy : MonoBehaviour
     void FixedUpdate()
     {
         bool allRocketsDead = true;
-        float bestCarFitness = 0;
+        float bestRocketFitness = 0;
 
         foreach (AIRocketController rocket in rocketControllers)
         {
@@ -64,9 +68,9 @@ public class Academy : MonoBehaviour
                 allRocketsDead = false;
 
                 // find best rocket
-                if (rocket.fitness > bestCarFitness)
+                if (rocket.fitness > bestRocketFitness)
                 {
-                    bestCarFitness = rocket.fitness;
+                    bestRocketFitness = rocket.fitness;
                     bestRocket = rocket;
 
                     cameraTarget.target = rocket.transform;
@@ -88,6 +92,8 @@ public class Academy : MonoBehaviour
             {
                 if (currentGenome == numGenomes)
                 {
+                    SaveBestNetwork();
+                    SaveStats();
                     species.NextGeneration();
 
                     for (int i = 0; i < numSimulate; i++)
@@ -133,5 +139,34 @@ public class Academy : MonoBehaviour
                 currentExperiment += 1;
             }
         }
+    }
+
+    private void EmptySaves()
+    {
+        if (Directory.Exists("./Saves"))
+        {
+            Directory.Delete("./Saves", true);
+        }
+        Directory.CreateDirectory("./Saves");
+        Directory.CreateDirectory("./Saves/FitnessSaves");
+        Directory.CreateDirectory("./Saves/NetworkSaves");
+    }
+
+    private void SaveBestNetwork()
+    {
+        species.population.OrderByDescending(n => n.fitness).FirstOrDefault().Save(currentGeneration);
+    }
+
+    private void SaveStats()
+    {
+        StreamWriter writer = new StreamWriter("./Saves/FitnessSaves/fits.csv", true);
+
+        foreach (var individual in species.population)
+        {
+            writer.Write(individual.fitness + ", ");
+        }
+        writer.Write("\n");
+
+        writer.Close();
     }
 }
