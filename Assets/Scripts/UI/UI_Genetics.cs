@@ -23,8 +23,8 @@ public class UI_Genetics : MonoBehaviour
         Time.timeScale = slider.value;
         timeScale.text = "Timescale: " + slider.value + "x";
 
-        experiment.text = "Experiment #: " + academy.currentExperiment;
-        genome.text = "Genome #: " + (academy.currentGenome + 1 - academy.batchSimulate) + " - " + (academy.currentGenome);
+        experiment.text = "Experiment #: " + academy.currentExperiment + " / " + academy.numExperiment;
+        genome.text = "Genome #: " + (academy.currentGenome + 1 - academy.batchSimulate) + "-" + academy.currentGenome + " / " + academy.numGenomes;
         generation.text = "Generation #: " + academy.currentGeneration;
 
         if (academy.bestRocket != null)
@@ -33,6 +33,6 @@ public class UI_Genetics : MonoBehaviour
         }
 
         bestFitness.text = "Alltime Best Fitness: " + academy.bestGenomeFitness;
-        averageFitness.text = "Last Gen Average Fitness: " + academy.species.averageFitness;
+        averageFitness.text = "Last Average Fitness: " + academy.species.averageFitness;
     }
 }

@@ -122,6 +122,8 @@ public class GravityTarget : MonoBehaviour
 
     public void ResetPosition()
     {
+        trailRenderer.Clear();
+        
         rigidBody.position = startingPosition;
 
         joint = null;

@@ -51,7 +51,6 @@ public class RocketTarget : MonoBehaviour
         {
             ChangeRocketVelocity();
             ChangeRocketDirection();
-            //ChangeMapIconDirection();
             ChangeFireParticle();
         }
     }

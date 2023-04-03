@@ -125,7 +125,7 @@ public class AIRocketController : MonoBehaviour
         rocket.updateVelocityValue = 0;
         rocket.rigidBody.isKinematic = false;
 
-        rocketGravity.ResetPosition();
         rocket.ResetRocket();
+        rocketGravity.ResetPosition();
     }
 }
