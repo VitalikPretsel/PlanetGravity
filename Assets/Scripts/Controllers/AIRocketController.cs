@@ -11,8 +11,10 @@ public class AIRocketController : MonoBehaviour
     public GravityTarget rocketGravity;
     public List<GravityTarget> obstacles;
     public GravityTarget destination;
+    private int numExperiment;
 
     public float fitness;
+    public float bestFitness;
 
     public bool alive = true;
 
@@ -20,6 +22,7 @@ public class AIRocketController : MonoBehaviour
     {
         obstacles.Add(GameObject.Find("Earth").GetComponent<GravityTarget>());
         destination = GameObject.Find("Moon").GetComponent<GravityTarget>();
+        numExperiment = GameObject.Find("Academy").GetComponent<Academy>().numExperiment;
     }
 
     void FixedUpdate()
@@ -68,9 +71,19 @@ public class AIRocketController : MonoBehaviour
     {
         float distance = Vector3.Distance(rocket.rigidBody.position, destination.rigidBody.position);
 
+        // to prevent fitnessValue higher than 1
+        if (distance < 1)
+        {
+            distance = 1;
+        }
+
         float fitnessValue = 1 / distance;
 
         fitness = fitnessValue;
+        if (fitness > bestFitness)
+        {
+            bestFitness = fitness;  // matters only value when rocket was closest to destination
+        }
     }
 
     private float ToUseValue(float value, float max = 1)
@@ -87,7 +100,7 @@ public class AIRocketController : MonoBehaviour
         rocket.rigidBody.isKinematic = true;
         rocket.rigidBody.velocity = Vector3.zero;
 
-        network.fitness += fitness;
+        network.fitness += bestFitness / numExperiment; // to get avarage for all experiments
     }
 
     public void Reset()
@@ -103,6 +116,9 @@ public class AIRocketController : MonoBehaviour
 
         network.fitness = 0;
 
+        fitness = 0;
+        bestFitness = 0;
+
         foreach (var obstacle in obstacles)
         {
             obstacle.ResetPosition();
@@ -117,6 +133,9 @@ public class AIRocketController : MonoBehaviour
         rocket.handleVelocity = true;
         rocket.updateVelocityValue = 0;
         rocket.rigidBody.isKinematic = false;
+
+        fitness = 0;
+        bestFitness = 0;
 
         rocket.ResetRocket();
         rocketGravity.ResetPosition();
