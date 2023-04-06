@@ -17,10 +17,14 @@ public class RocketTarget : MonoBehaviour
 
     public Vector3 moveVector;
 
-    public Vector3 centerPosition;
     public float idleTime;
     public float stuckTime;
     public float awayDistance;
+    public Vector3 centerPosition;
+
+    public bool handleIdle;
+    public bool handleStuck;
+    public bool handleAway;
     public bool handleCrush;
 
     public bool idle;
@@ -43,9 +47,18 @@ public class RocketTarget : MonoBehaviour
 
     void FixedUpdate()
     {
-        //CheckForIdle();
-        CheckForStuck();
-        CheckForAway();
+        if (handleIdle)
+        {
+            CheckForIdle();
+        }
+        if (handleStuck)
+        {
+            CheckForStuck();
+        }
+        if (handleAway)
+        {
+            CheckForAway();
+        }
 
         if (handleVelocity)
         {
@@ -91,7 +104,7 @@ public class RocketTarget : MonoBehaviour
         if (!stuck && joint != null)
         {
             timeStuckLeft += Time.deltaTime;
-            if (timeStuckLeft > idleTime)
+            if (timeStuckLeft > stuckTime)
             {
                 // Been stuck for too long
                 Debug.Log("Player Stuck");
@@ -100,7 +113,12 @@ public class RocketTarget : MonoBehaviour
         }
         else
         {
-            timeStuckLeft = 0;
+            // In case it's unstuck just for a moment
+            timeStuckLeft -= Time.deltaTime;
+            if (timeStuckLeft < 0)
+            {
+                timeStuckLeft = 0;
+            }
         }
     }
 

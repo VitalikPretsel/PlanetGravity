@@ -155,7 +155,7 @@ MonoBehaviour:
   numGenomes: 30
   numSimulate: 1
   numExperiment: 1
-  mutationRate: 0.1
+  mutationRate: 0.02
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
   currentGenome: 0
   currentExperiment: 1

@@ -5415,10 +5415,13 @@ MonoBehaviour:
   maxUpdateVelocityValue: 0.01
   handleVelocity: 1
   moveVector: {x: 0, y: 0, z: 0}
-  centerPosition: {x: 0, y: 0, z: 0}
   idleTime: 1
   stuckTime: 1
   awayDistance: 50
+  centerPosition: {x: 0, y: 0, z: 0}
+  handleIdle: 0
+  handleStuck: 1
+  handleAway: 1
   handleCrush: 1
   idle: 0
   stuck: 0
