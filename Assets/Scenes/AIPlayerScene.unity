@@ -157,13 +157,17 @@ MonoBehaviour:
   numExperiment: 1
   mutationRate: 0.02
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
+  cameraTarget: {fileID: 925159474}
+  bestRocket: {fileID: 0}
   currentGenome: 0
   currentExperiment: 1
   batchSimulate: 0
   currentGeneration: 0
-  cameraTarget: {fileID: 925159474}
+  currentExperimentFitness: 0
+  bestExperimentFitness: 0
   bestGenomeFitness: 0
-  bestRocket: {fileID: 0}
+  lastGenerationAverageFitness: 0
+  bestGenerationAverageFitness: 0
   Network_GUI: {fileID: 7079019132684391397, guid: 25f9c8b078b564ac98677da3a1b2d088, type: 3}
 --- !u!4 &351216995
 Transform:

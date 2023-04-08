@@ -19,14 +19,19 @@ public class Academy : MonoBehaviour
 
     public GeneticController species;
 
+    public CameraTarget cameraTarget;
+    public AIRocketController bestRocket;
+
     public int currentGenome;
     public int currentExperiment;
     public int batchSimulate;
     public int currentGeneration;
 
-    public CameraTarget cameraTarget;
+    public float currentExperimentFitness;
+    public float bestExperimentFitness;
     public float bestGenomeFitness;
-    public AIRocketController bestRocket;
+    public float lastGenerationAverageFitness;
+    public float bestGenerationAverageFitness;
 
     public GameObject Network_GUI;
     private UI_Network networkUI;
@@ -72,13 +77,14 @@ public class Academy : MonoBehaviour
                 {
                     bestRocketFitness = rocket.fitness;
                     bestRocket = rocket;
+                    currentExperimentFitness = bestRocketFitness;
 
                     cameraTarget.target = rocket.transform;
                     networkUI.DrawConnections(rocket.network);
 
-                    if (rocket.fitness > bestGenomeFitness)
+                    if (rocket.fitness > bestExperimentFitness)
                     {
-                        bestGenomeFitness = rocket.fitness;
+                        bestExperimentFitness = rocket.fitness;
                     }
                 }
             }
@@ -90,11 +96,25 @@ public class Academy : MonoBehaviour
 
             if (currentExperiment == numExperiment)
             {
+                foreach (AIRocketController rocket in rocketControllers)
+                {
+                    if (rocket.network.fitness > bestGenomeFitness)
+                    {
+                        bestGenomeFitness = rocket.network.fitness;
+                    }
+                }
+
                 if (currentGenome == numGenomes)
                 {
                     SaveBestNetwork();
                     SaveStats();
                     species.NextGeneration();
+
+                    lastGenerationAverageFitness = species.averageFitness;
+                    if (lastGenerationAverageFitness > bestGenerationAverageFitness)
+                    {
+                        bestGenerationAverageFitness = lastGenerationAverageFitness;
+                    }
 
                     for (int i = 0; i < numSimulate; i++)
                     {
