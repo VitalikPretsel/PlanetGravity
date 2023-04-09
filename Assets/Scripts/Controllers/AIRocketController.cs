@@ -67,7 +67,7 @@ public class AIRocketController : MonoBehaviour
             {
                 hits += 1;
             }
-            if (rocket.stuck || rocket.away || rocket.idle || rocket.crushed || rocket.hit)
+            if (rocket.stuck || rocket.collided || rocket.away || rocket.idle || rocket.crushed || rocket.hit)
             {
                 Stop();
             }

@@ -7,7 +7,7 @@ using UnityEngine;
 public class GravityTarget : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
-    private FixedJoint2D joint;
+    public FixedJoint2D joint;
     private TrailRenderer trailRenderer;
 
     public bool isAttractee;

@@ -5137,6 +5137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 0}
+  joint: {fileID: 0}
   isAttractee: 1
   isAttractor: 0
   startingPosition: {x: 0, y: 0.6459, z: 0}
@@ -5165,15 +5166,19 @@ MonoBehaviour:
   moveVector: {x: 0, y: 1, z: 0}
   idleTime: 1
   stuckTime: 1
+  collideTime: 1
   awayDistance: 50
+  crushCount: 5
   centerPosition: {x: 0, y: 0, z: 0}
   destination: {fileID: 0}
   handleIdle: 0
-  handleStuck: 1
+  handleStuck: 0
+  handleCollide: 1
   handleAway: 1
   handleCrush: 0
   idle: 0
   stuck: 0
+  collided: 0
   away: 0
   crushed: 0
   hit: 0

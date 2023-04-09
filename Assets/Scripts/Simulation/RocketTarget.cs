@@ -6,8 +6,8 @@ using UnityEngine;
 public class RocketTarget : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
+    private GravityTarget gravityTarget;
     private GameObject particle;
-    private GameObject rocketIcon;
     private ParticleSystem particleSys;
 
     public float updateVelocityValue;
@@ -19,29 +19,36 @@ public class RocketTarget : MonoBehaviour
 
     public float idleTime;
     public float stuckTime;
+    public float collideTime;
     public float awayDistance;
+    public int crushCount;
     public Vector3 centerPosition;
     public GameObject destination;
 
     public bool handleIdle;
     public bool handleStuck;
+    public bool handleCollide;
     public bool handleAway;
     public bool handleCrush;
 
     public bool idle;
     public bool stuck;
+    public bool collided;
     public bool away;
     public bool crushed;
     public bool hit;
 
     private float timeIdleLeft;
     private float timeStuckLeft;
+    private float timeCollideLeft;
+    private int crushCountLeft;
     private Vector2 previousPosition;
 
     void Awake()
     {
+        gravityTarget = this.GetComponent<GravityTarget>();
+
         rigidBody = this.GetComponent<Rigidbody2D>();
-        rocketIcon = this.transform.Find("MapIcon").gameObject;
         particle = this.transform.Find("FlameParticles").gameObject;
         particleSys = particle.GetComponent<ParticleSystem>();
         previousPosition = rigidBody.position;
@@ -56,6 +63,10 @@ public class RocketTarget : MonoBehaviour
         if (handleStuck)
         {
             CheckForStuck();
+        }
+        if (handleCollide)
+        {
+            CheckForCollided();
         }
         if (handleAway)
         {
@@ -94,6 +105,7 @@ public class RocketTarget : MonoBehaviour
         else
         {
             timeIdleLeft = 0;
+            idle = false;
         }
         previousPosition = rigidBody.position;
     }
@@ -101,9 +113,8 @@ public class RocketTarget : MonoBehaviour
     void CheckForStuck()
     {
         // Check to see if rocket fixed with joint
-        var joint = gameObject.GetComponent<FixedJoint2D>();
 
-        if (!stuck && joint != null)
+        if (!stuck && gravityTarget.joint != null)
         {
             timeStuckLeft += Time.deltaTime;
             if (timeStuckLeft > stuckTime)
@@ -120,6 +131,31 @@ public class RocketTarget : MonoBehaviour
             if (timeStuckLeft < 0)
             {
                 timeStuckLeft = 0;
+                stuck = false;
+            }
+        }
+    }
+
+    void CheckForCollided()
+    {
+        if (!collided && gravityTarget.isColliding)
+        {
+            timeCollideLeft += Time.deltaTime;
+            if (timeCollideLeft > collideTime)
+            {
+                // Was colliding for too long
+                Debug.Log("Player Collided");
+                collided = true;
+            }
+        }
+        else
+        {
+            // In case it's uncollided just for a moment
+            timeCollideLeft -= Time.deltaTime / 5;
+            if (timeCollideLeft < 0)
+            {
+                timeCollideLeft = 0;
+                collided = false;
             }
         }
     }
@@ -132,14 +168,22 @@ public class RocketTarget : MonoBehaviour
             Debug.Log("Player is far away");
             away = true;
         }
+        else
+        {
+            away = false;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (handleCrush)
         {
-            Debug.Log("Player Crushed");
-            crushed = true;
+            crushCountLeft += 1;
+            if (crushCountLeft >= crushCount)
+            {
+                Debug.Log("Player Crushed");
+                crushed = true;
+            }
         }
 
         if (destination != null)
@@ -156,9 +200,11 @@ public class RocketTarget : MonoBehaviour
     {
         timeIdleLeft = 0;
         timeStuckLeft = 0;
+        crushCountLeft = 0;
 
         idle = false;
         stuck = false;
+        collided = false;
         away = false;
         crushed = false;
         hit = false;
