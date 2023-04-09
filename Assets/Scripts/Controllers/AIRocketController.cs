@@ -104,19 +104,22 @@ public class AIRocketController : MonoBehaviour
 
         rocket.handleVelocity = false;
         rocket.updateVelocityValue = 0;
-        rocket.rigidBody.isKinematic = true;
+        //rocket.rigidBody.isKinematic = true;
         rocket.rigidBody.velocity = Vector3.zero;
+        rocket.rigidBody.simulated = false;
 
         network.fitness += bestFitness / numExperiment; // to get avarage for all experiments
     }
 
     public void Reset()
     {
+        rocket.rigidBody.simulated = true;
+
         alive = true;
 
         rocket.handleVelocity = true;
         rocket.updateVelocityValue = 0;
-        rocket.rigidBody.isKinematic = false;
+        //rocket.rigidBody.isKinematic = false;
         
         rocketGravity.ResetPosition();
         rocket.ResetRocket();
@@ -137,11 +140,13 @@ public class AIRocketController : MonoBehaviour
 
     public void ResetExp()
     {
+        rocket.rigidBody.simulated = true;
+
         alive = true;
 
         rocket.handleVelocity = true;
         rocket.updateVelocityValue = 0;
-        rocket.rigidBody.isKinematic = false;
+        //rocket.rigidBody.isKinematic = false;
 
         fitness = 0;
         bestFitness = 0;

@@ -25,6 +25,8 @@ public class GravityTarget : MonoBehaviour
 
     private Vector3 savedVelocity;
 
+    private bool clearTrail = false;
+
     void Awake()
     {
         rigidBody = this.GetComponent<Rigidbody2D>();
@@ -47,6 +49,13 @@ public class GravityTarget : MonoBehaviour
         if (joint != null)
         {
             joint.autoConfigureConnectedAnchor = false;
+        }
+
+        if (clearTrail)
+        {
+            clearTrail = false;
+            trailRenderer.Clear();
+            trailRenderer.enabled = true;
         }
     }
 
@@ -128,8 +137,6 @@ public class GravityTarget : MonoBehaviour
 
     public void ResetPosition()
     {
-        trailRenderer.Clear();
-        
         rigidBody.position = startingPosition;
 
         joint = null;
@@ -139,7 +146,8 @@ public class GravityTarget : MonoBehaviour
         rigidBody.velocity = Vector3.zero;
         ApplyVelocity(initialVelocity);
 
-        trailRenderer.Clear();
+        trailRenderer.enabled = false;
+        clearTrail = true;
     }
 
     void SetAsAttractor(bool value)

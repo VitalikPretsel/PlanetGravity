@@ -5144,7 +5144,7 @@ MonoBehaviour:
   applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 1
   handleCollidingGravity: 1
-  handleCollidingJoint: 1
+  handleCollidingJoint: 0
   isColliding: 0
 --- !u!114 &1026480336076205483
 MonoBehaviour:
@@ -5167,14 +5167,16 @@ MonoBehaviour:
   stuckTime: 1
   awayDistance: 50
   centerPosition: {x: 0, y: 0, z: 0}
+  destination: {fileID: 0}
   handleIdle: 0
   handleStuck: 1
   handleAway: 1
-  handleCrush: 1
+  handleCrush: 0
   idle: 0
   stuck: 0
   away: 0
   crushed: 0
+  hit: 0
 --- !u!114 &1026480336076205480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5197,4 +5199,6 @@ MonoBehaviour:
   obstacles: []
   destination: {fileID: 0}
   fitness: 0
+  bestFitness: 0
   alive: 1
+  hits: 0

@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numGenomes: 30
-  numSimulate: 1
-  numExperiment: 30
+  numSimulate: 3
+  numExperiment: 3
   mutationRate: 0.02
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
   cameraTarget: {fileID: 925159474}
@@ -169,6 +169,7 @@ MonoBehaviour:
   lastGenerationAverageFitness: 0
   bestGenerationAverageFitness: 0
   currentGenomeHitsNumber: 0
+  bestGenomeHitsPercent: 0
   lastGenerationHitsPercent: 0
   bestGenerationHitsPercent: 0
   Network_GUI: {fileID: 7079019132684391397, guid: 25f9c8b078b564ac98677da3a1b2d088, type: 3}
