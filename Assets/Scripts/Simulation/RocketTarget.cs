@@ -21,6 +21,7 @@ public class RocketTarget : MonoBehaviour
     public float stuckTime;
     public float awayDistance;
     public Vector3 centerPosition;
+    public GameObject destination;
 
     public bool handleIdle;
     public bool handleStuck;
@@ -31,6 +32,7 @@ public class RocketTarget : MonoBehaviour
     public bool stuck;
     public bool away;
     public bool crushed;
+    public bool hit;
 
     private float timeIdleLeft;
     private float timeStuckLeft;
@@ -139,6 +141,15 @@ public class RocketTarget : MonoBehaviour
             Debug.Log("Player Crushed");
             crushed = true;
         }
+
+        if (destination != null)
+        {
+            if (collision.gameObject == destination)
+            {
+                Debug.Log("Player Hit the destination");
+                hit = true;
+            }
+        }
     }
 
     public void ResetRocket()
@@ -150,6 +161,7 @@ public class RocketTarget : MonoBehaviour
         stuck = false;
         away = false;
         crushed = false;
+        hit = false;
 
         transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
     }

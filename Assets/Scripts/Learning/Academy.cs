@@ -33,6 +33,12 @@ public class Academy : MonoBehaviour
     public float lastGenerationAverageFitness;
     public float bestGenerationAverageFitness;
 
+    public float currentGenomeHitsNumber;
+    public float bestGenomeHitsPercent;
+    private float currentGenerationHitsNumber;
+    public float lastGenerationHitsPercent;
+    public float bestGenerationHitsPercent;
+
     public GameObject Network_GUI;
     private UI_Network networkUI;
 
@@ -78,6 +84,7 @@ public class Academy : MonoBehaviour
                     bestRocketFitness = rocket.fitness;
                     bestRocket = rocket;
                     currentExperimentFitness = bestRocketFitness;
+                    currentGenomeHitsNumber = bestRocket.hits;
 
                     cameraTarget.target = rocket.transform;
                     networkUI.DrawConnections(rocket.network);
@@ -102,6 +109,12 @@ public class Academy : MonoBehaviour
                     {
                         bestGenomeFitness = rocket.network.fitness;
                     }
+
+                    float hitsPercent = (float)rocket.hits / numExperiment;
+                    if (hitsPercent > bestGenomeHitsPercent)
+                    {
+                        bestGenomeHitsPercent = hitsPercent;
+                    }
                 }
 
                 if (currentGenome == numGenomes)
@@ -118,9 +131,17 @@ public class Academy : MonoBehaviour
 
                     for (int i = 0; i < numSimulate; i++)
                     {
+                        currentGenerationHitsNumber += rocketControllers[i].hits;
                         rocketControllers[i].network = species.population[i];
                         rocketControllers[i].Reset();
                     }
+
+                    lastGenerationHitsPercent = currentGenerationHitsNumber / (numGenomes * numExperiment);
+                    if (lastGenerationHitsPercent > bestGenerationHitsPercent)
+                    {
+                        bestGenerationHitsPercent = lastGenerationHitsPercent;
+                    }
+                    currentGenerationHitsNumber = 0;
 
                     currentGeneration++;
                     currentGenome = numSimulate;
@@ -140,6 +161,7 @@ public class Academy : MonoBehaviour
 
                     for (int i = 0; i < batchSimulate; i++)
                     {
+                        currentGenerationHitsNumber += rocketControllers[i].hits;
                         rocketControllers[i].network = species.population[currentGenome + i];
                         rocketControllers[i].Reset();
                     }
@@ -169,6 +191,7 @@ public class Academy : MonoBehaviour
         }
         Directory.CreateDirectory("./Saves");
         Directory.CreateDirectory("./Saves/FitnessSaves");
+        Directory.CreateDirectory("./Saves/HitsSaves");
         Directory.CreateDirectory("./Saves/NetworkSaves");
     }
 
@@ -179,14 +202,17 @@ public class Academy : MonoBehaviour
 
     private void SaveStats()
     {
-        StreamWriter writer = new StreamWriter("./Saves/FitnessSaves/fits.csv", true);
+        StreamWriter fitWriter = new StreamWriter("./Saves/FitnessSaves/fits.csv", true);
+        StreamWriter hitWriter = new StreamWriter("./Saves/HitsSaves/hits.csv", true);
 
         foreach (var individual in species.population)
         {
-            writer.Write(individual.fitness + ", ");
+            fitWriter.Write(individual.fitness + ", ");
         }
-        writer.Write("\n");
+        fitWriter.Write("\n");
+        hitWriter.Write(lastGenerationHitsPercent + "\n");
 
-        writer.Close();
+        fitWriter.Close();
+        hitWriter.Close();
     }
 }

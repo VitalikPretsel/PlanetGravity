@@ -21,6 +21,11 @@ public class UI_Genetics : MonoBehaviour
     public Text lastGenerationAverageFitness;
     public Text bestGenerationAverageFitness;
 
+    public Text currentGenomeHitsNumber;
+    public Text bestGenomeHitsPercent;
+    public Text lastGenerationHitsPercent;
+    public Text bestGenerationHitsPercent;
+
     void Update()
     {
         Time.timeScale = slider.value;
@@ -35,5 +40,10 @@ public class UI_Genetics : MonoBehaviour
         bestGenomeFitness.text = "Best Genome Fit: " + Math.Round(academy.bestGenomeFitness, 5);
         lastGenerationAverageFitness.text = "Last Generation Avg Fit: " + Math.Round(academy.lastGenerationAverageFitness, 5);
         bestGenerationAverageFitness.text = "Best Generation Avg Fit: " + Math.Round(academy.bestGenerationAverageFitness, 5);
+
+        currentGenomeHitsNumber.text = "Current Genome Hits Number: " + academy.currentGenomeHitsNumber;
+        bestGenomeHitsPercent.text = "Best Genome Hits: " + Math.Round(academy.bestGenomeHitsPercent * 100, 2) + "%";
+        lastGenerationHitsPercent.text = "Last Generation Hits: " + Math.Round(academy.lastGenerationHitsPercent * 100, 2) + "%";
+        bestGenerationHitsPercent.text = "Best Generation Hits: " + Math.Round(academy.bestGenerationHitsPercent * 100, 2) + "%";
     }
 }

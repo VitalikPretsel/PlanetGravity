@@ -23,6 +23,8 @@ public class GravityTarget : MonoBehaviour
 
     public bool isColliding;
 
+    private Vector3 savedVelocity;
+
     void Awake()
     {
         rigidBody = this.GetComponent<Rigidbody2D>();
@@ -39,6 +41,8 @@ public class GravityTarget : MonoBehaviour
 
     void FixedUpdate()
     {
+        savedVelocity = rigidBody.velocity;
+
         SetGravityState(!isColliding);
         if (joint != null)
         {
@@ -58,6 +62,8 @@ public class GravityTarget : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        var collidedRigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
+
         if (handleCollidingGravity)
         {
             isColliding = true;
@@ -67,11 +73,11 @@ public class GravityTarget : MonoBehaviour
         {
             rigidBody.velocity = Vector3.zero;
             rigidBody.angularVelocity = 0;
+
+            collidedRigidbody.velocity = collision.gameObject.GetComponent<GravityTarget>().savedVelocity;
         }
         if (handleCollidingJoint)
         {
-            var collidedRigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
-
             if (joint == null)
             {
                 joint = gameObject.AddComponent<FixedJoint2D>();

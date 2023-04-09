@@ -18,10 +18,13 @@ public class AIRocketController : MonoBehaviour
 
     public bool alive = true;
 
+    public int hits = 0;
+
     void Start()
     {
         obstacles.Add(GameObject.Find("Earth").GetComponent<GravityTarget>());
         destination = GameObject.Find("Moon").GetComponent<GravityTarget>();
+        rocket.destination = GameObject.Find("Moon");
         numExperiment = GameObject.Find("Academy").GetComponent<Academy>().numExperiment;
     }
 
@@ -59,11 +62,15 @@ public class AIRocketController : MonoBehaviour
 
             CalculateFitness();
 
-            if (rocket.stuck || rocket.away || rocket.idle || rocket.crushed)
+
+            if (rocket.hit)
+            {
+                hits += 1;
+            }
+            if (rocket.stuck || rocket.away || rocket.idle || rocket.crushed || rocket.hit)
             {
                 Stop();
             }
-
         }
     }
 
@@ -118,6 +125,8 @@ public class AIRocketController : MonoBehaviour
 
         fitness = 0;
         bestFitness = 0;
+        
+        hits = 0;
 
         foreach (var obstacle in obstacles)
         {
