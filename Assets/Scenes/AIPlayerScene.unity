@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numGenomes: 30
-  numSimulate: 3
-  numExperiment: 3
+  numSimulate: 1
+  numExperiment: 1
   mutationRate: 0.02
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
   cameraTarget: {fileID: 925159474}
@@ -659,6 +659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 0}
+  joint: {fileID: 0}
   isAttractee: 1
   isAttractor: 1
   startingPosition: {x: 40.57, y: 0, z: 0}
@@ -1330,6 +1331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 0}
+  joint: {fileID: 0}
   isAttractee: 0
   isAttractor: 1
   startingPosition: {x: 0, y: 0, z: 0}
