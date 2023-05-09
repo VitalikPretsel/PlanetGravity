@@ -38,11 +38,11 @@ public class AIRocketController : MonoBehaviour
 
             var normCoef = rocket.awayDistance;
 
-            foreach (var obstacle in obstacles)
-            {
-                input.Add(ToNormValue(obstacle.rigidBody.position.x, normCoef));
-                input.Add(ToNormValue(obstacle.rigidBody.position.y, normCoef));
-            }
+            //foreach (var obstacle in obstacles)
+            //{
+            //    input.Add(ToNormValue(obstacle.rigidBody.position.x, normCoef));
+            //    input.Add(ToNormValue(obstacle.rigidBody.position.y, normCoef));
+            //}
 
             input.Add(ToNormValue(destination.rigidBody.position.x, normCoef));
             input.Add(ToNormValue(destination.rigidBody.position.y, normCoef));

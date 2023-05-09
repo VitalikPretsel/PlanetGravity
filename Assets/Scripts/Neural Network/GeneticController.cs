@@ -20,7 +20,7 @@ public class GeneticController
 
         for (int i = 0; i < popSize; i++){
             // Create NN with specific structure
-            this.population.Add(new NeuralNetwork(new int[] {8,7,3}));
+            this.population.Add(new NeuralNetwork(new int[] {6,5,3})); // 8,7,3
         }
     }
 
@@ -73,7 +73,9 @@ public class GeneticController
         for (int i = 0; i < chromosome.Count; i++) {
             if (this.mutationRate > UnityEngine.Random.Range(0f, 1f)){
                 Debug.Log("Mutate");
-                chromosome[i] = UnityEngine.Random.Range(-1f, 1f);
+                chromosome[i] += 0.001 * UnityEngine.Random.Range(-1f, 1f);
+                if (chromosome[i] > 1) chromosome[i] = 1;
+                else if (chromosome[i] < -1) chromosome[i] = -1;
             }
         }
 
