@@ -5416,6 +5416,7 @@ MonoBehaviour:
   handleVelocity: 1
   moveVector: {x: 0, y: 0, z: 0}
   idleTime: 1
+  oldTime: 30
   stuckTime: 1
   collideTime: 1
   awayDistance: 50
@@ -5423,11 +5424,13 @@ MonoBehaviour:
   centerPosition: {x: 0, y: 0, z: 0}
   destination: {fileID: 1263217138}
   handleIdle: 1
+  handleOld: 1
   handleStuck: 1
   handleCollide: 1
   handleAway: 1
   handleCrush: 1
   idle: 0
+  old: 0
   stuck: 0
   collided: 0
   away: 0

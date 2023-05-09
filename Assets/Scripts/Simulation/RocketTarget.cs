@@ -18,6 +18,7 @@ public class RocketTarget : MonoBehaviour
     public Vector3 moveVector;
 
     public float idleTime;
+    public float oldTime;
     public float stuckTime;
     public float collideTime;
     public float awayDistance;
@@ -26,19 +27,23 @@ public class RocketTarget : MonoBehaviour
     public GameObject destination;
 
     public bool handleIdle;
+    public bool handleOld;
     public bool handleStuck;
     public bool handleCollide;
     public bool handleAway;
     public bool handleCrush;
 
     public bool idle;
+    public bool old;
     public bool stuck;
     public bool collided;
     public bool away;
     public bool crushed;
     public bool hit;
 
+
     private float timeIdleLeft;
+    private float timeOldLeft;
     private float timeStuckLeft;
     private float timeCollideLeft;
     private int crushCountLeft;
@@ -59,6 +64,10 @@ public class RocketTarget : MonoBehaviour
         if (handleIdle)
         {
             CheckForIdle();
+        }
+        if (handleOld)
+        {
+            CheckForOld();
         }
         if (handleStuck)
         {
@@ -108,6 +117,21 @@ public class RocketTarget : MonoBehaviour
             idle = false;
         }
         previousPosition = rigidBody.position;
+    }
+
+    void CheckForOld()
+    {
+        // Check to see if rocket lives too long
+        if (!old)
+        {
+            timeOldLeft += Time.deltaTime;
+            if (timeOldLeft > oldTime)
+            {
+                // Lives for too long
+                Debug.Log("Player is too Old");
+                old = true;
+            }
+        }
     }
 
     void CheckForStuck()
@@ -199,10 +223,12 @@ public class RocketTarget : MonoBehaviour
     public void ResetRocket()
     {
         timeIdleLeft = 0;
+        timeOldLeft = 0;
         timeStuckLeft = 0;
         crushCountLeft = 0;
 
         idle = false;
+        old = false;
         stuck = false;
         collided = false;
         away = false;
