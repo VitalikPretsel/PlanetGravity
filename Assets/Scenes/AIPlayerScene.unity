@@ -154,8 +154,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numGenomes: 30
   numSimulate: 1
-  numExperiment: 1
-  mutationRate: 0.02
+  numExperiment: 10
+  mutationRate: 0.05
+  crossoverRate: 0.5
+  mutationChange: 0.001
+  resetPosition: 1
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
   cameraTarget: {fileID: 925159474}
   bestRocket: {fileID: 0}
@@ -1301,7 +1304,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 3
 --- !u!4 &1884565189
 Transform:
   m_ObjectHideFlags: 0

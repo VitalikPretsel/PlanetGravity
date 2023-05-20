@@ -12,11 +12,13 @@ public class AIRocketController : MonoBehaviour
     public List<GravityTarget> obstacles;
     public GravityTarget destination;
     private int numExperiment;
+    private bool resetPosition;
 
     public float fitness;
     public float bestFitness;
 
     public bool alive = true;
+    public bool wrong = false;
 
     public int hits = 0;
 
@@ -25,7 +27,10 @@ public class AIRocketController : MonoBehaviour
         obstacles.Add(GameObject.Find("Earth").GetComponent<GravityTarget>());
         destination = GameObject.Find("Moon").GetComponent<GravityTarget>();
         rocket.destination = GameObject.Find("Moon");
-        numExperiment = GameObject.Find("Academy").GetComponent<Academy>().numExperiment;
+
+        var academy = GameObject.Find("Academy").GetComponent<Academy>();
+        numExperiment = academy.numExperiment;
+        resetPosition = academy.resetPosition;
     }
 
     void FixedUpdate()
@@ -47,11 +52,14 @@ public class AIRocketController : MonoBehaviour
             input.Add(ToNormValue(destination.rigidBody.position.x, normCoef));
             input.Add(ToNormValue(destination.rigidBody.position.y, normCoef));
 
+            input.Add(ToNormValue(destination.rigidBody.velocity.x, 20));
+            input.Add(ToNormValue(destination.rigidBody.velocity.y, 20));
+
             input.Add(ToNormValue(rocket.rigidBody.position.x, normCoef));
             input.Add(ToNormValue(rocket.rigidBody.position.y, normCoef));
 
-            input.Add(ToNormValue(rocket.rigidBody.velocity.x, normCoef));
-            input.Add(ToNormValue(rocket.rigidBody.velocity.y, normCoef));
+            input.Add(ToNormValue(rocket.rigidBody.velocity.x, 1000));
+            input.Add(ToNormValue(rocket.rigidBody.velocity.y, 1000));
 
             // get outputs from network
 
@@ -64,13 +72,17 @@ public class AIRocketController : MonoBehaviour
 
             CalculateFitness();
 
-
             if (rocket.hit)
             {
                 hits += 1;
             }
             if (rocket.stuck || rocket.collided || rocket.away || rocket.idle || rocket.old || rocket.crushed || rocket.hit)
             {
+                if (!rocket.hit && !rocket.away)
+                {
+                    wrong = true;
+                    bestFitness = 0;
+                }
                 Stop();
             }
         }
@@ -113,6 +125,7 @@ public class AIRocketController : MonoBehaviour
     private void Stop()
     {
         alive = false;
+        wrong = false;
 
         rocket.handleVelocity = false;
         rocket.updateVelocityValue = 0;
@@ -127,6 +140,7 @@ public class AIRocketController : MonoBehaviour
         rocket.rigidBody.simulated = true;
 
         alive = true;
+        wrong = false;
 
         rocket.handleVelocity = true;
         rocket.updateVelocityValue = 0;
@@ -141,11 +155,14 @@ public class AIRocketController : MonoBehaviour
         
         hits = 0;
 
-        foreach (var obstacle in obstacles)
+        if (resetPosition)
         {
-            obstacle.ResetPosition();
+            foreach (var obstacle in obstacles)
+            {
+                obstacle.ResetPosition();
+            }
+            destination.ResetPosition();
         }
-        destination.ResetPosition();
     }
 
     public void ResetExp()
@@ -153,6 +170,7 @@ public class AIRocketController : MonoBehaviour
         rocket.rigidBody.simulated = true;
 
         alive = true;
+        wrong = false;
 
         rocket.handleVelocity = true;
         rocket.updateVelocityValue = 0;

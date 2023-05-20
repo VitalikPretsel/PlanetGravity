@@ -5165,7 +5165,7 @@ MonoBehaviour:
   handleVelocity: 1
   moveVector: {x: 0, y: 1, z: 0}
   idleTime: 1
-  oldTime: 30
+  oldTime: 10
   stuckTime: 1
   collideTime: 1
   awayDistance: 50
@@ -5175,7 +5175,7 @@ MonoBehaviour:
   handleIdle: 0
   handleOld: 1
   handleStuck: 0
-  handleCollide: 1
+  handleCollide: 0
   handleAway: 1
   handleCrush: 0
   idle: 0

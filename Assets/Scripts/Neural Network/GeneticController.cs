@@ -7,20 +7,25 @@ public class GeneticController
     public List<NeuralNetwork> nextGeneration;
     private double populationFitness;
     public float mutationRate;
+    public float mutationChange;
+    public float crossoverRate;
     public float averageFitness;
     int popSize;
 
     // Constructor creates randomly weighted neural networks
-    public GeneticController(int popSize, float mutationRate){
+    public GeneticController(int popSize, float mutationRate, float crossoverRate, float mutationChange)
+    {
         this.population = new List<NeuralNetwork>(popSize);
         this.populationFitness = 0f;
         this.mutationRate = mutationRate;
+        this.crossoverRate = crossoverRate;
+        this.mutationChange = mutationChange;
         this.averageFitness = 0f;
         this.popSize = popSize;
 
         for (int i = 0; i < popSize; i++){
             // Create NN with specific structure
-            this.population.Add(new NeuralNetwork(new int[] {6,5,3})); // 8,7,3
+            this.population.Add(new NeuralNetwork(new int[] {8,11,11,3})); // 8,7,3
         }
     }
 
@@ -31,7 +36,7 @@ public class GeneticController
         for (int i = 0; i < mother.Count; i++)
         {
             // Swap Genes
-            if (UnityEngine.Random.Range(0, 1f) > .5)
+            if (crossoverRate > UnityEngine.Random.Range(0, 1f))
             {
                 tempM.Add(father[i]);
                 tempF.Add(mother[i]);
@@ -73,7 +78,7 @@ public class GeneticController
         for (int i = 0; i < chromosome.Count; i++) {
             if (this.mutationRate > UnityEngine.Random.Range(0f, 1f)){
                 Debug.Log("Mutate");
-                chromosome[i] += 0.001 * UnityEngine.Random.Range(-1f, 1f);
+                chromosome[i] += mutationChange * UnityEngine.Random.Range(-1f, 1f);
                 if (chromosome[i] > 1) chromosome[i] = 1;
                 else if (chromosome[i] < -1) chromosome[i] = -1;
             }

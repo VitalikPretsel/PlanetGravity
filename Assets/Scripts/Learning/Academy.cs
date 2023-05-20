@@ -10,7 +10,11 @@ public class Academy : MonoBehaviour
     public int numSimulate;
     public int numExperiment;
 
-    public float mutationRate;
+    public float mutationRate = 0.05F;
+    public float crossoverRate = 0.5F;
+    public float mutationChange = 0.001F;
+
+    public bool resetPosition;
 
     public GameObject rocketFab;
     
@@ -42,11 +46,17 @@ public class Academy : MonoBehaviour
     public GameObject Network_GUI;
     private UI_Network networkUI;
 
+    private List<GravityTarget> obstacles = new List<GravityTarget>();
+    private GravityTarget destination;
+
     void Start()
     {
         EmptySaves();
 
-        species = new GeneticController(numGenomes, mutationRate);
+        obstacles.Add(GameObject.Find("Earth").GetComponent<GravityTarget>());
+        destination = GameObject.Find("Moon").GetComponent<GravityTarget>();
+
+        species = new GeneticController(numGenomes, mutationRate, crossoverRate, mutationChange);
         rockets = new GameObject[numSimulate];
         rocketControllers = new AIRocketController[numSimulate];
 
@@ -119,6 +129,12 @@ public class Academy : MonoBehaviour
 
                 if (currentGenome == numGenomes)
                 {
+                    foreach (var obstacle in obstacles)
+                    {
+                        obstacle.ResetPosition();
+                    }
+                    destination.ResetPosition();
+
                     SaveBestNetwork();
                     SaveStats();
                     species.NextGeneration();
