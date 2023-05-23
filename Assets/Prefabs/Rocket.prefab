@@ -5175,7 +5175,7 @@ MonoBehaviour:
   handleIdle: 0
   handleOld: 1
   handleStuck: 0
-  handleCollide: 0
+  handleCollide: 1
   handleAway: 1
   handleCrush: 0
   idle: 0
@@ -5209,4 +5209,5 @@ MonoBehaviour:
   fitness: 0
   bestFitness: 0
   alive: 1
+  wrong: 0
   hits: 0

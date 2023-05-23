@@ -96,6 +96,7 @@ public class GravityTarget : MonoBehaviour
                 joint.autoConfigureConnectedAnchor = true;
             }
 
+            // Tried to use this code to make joints more realistic, guess we don't need to use joints at all for realistic simulations
             //double massProduct = rigidBody.mass * collidedRigidbody.mass;
             //Vector3 difference = rigidBody.position - collidedRigidbody.position;
             //float distance = difference.magnitude;
@@ -142,7 +143,7 @@ public class GravityTarget : MonoBehaviour
         joint = null;
         isColliding = false;
         SetAsAttractee(isAttractee);
-        
+
         rigidBody.velocity = Vector3.zero;
         ApplyVelocity(initialVelocity);
 
@@ -165,7 +166,7 @@ public class GravityTarget : MonoBehaviour
         }
     }
 
-    void SetGravityState(bool isActive) 
+    void SetGravityState(bool isActive)
     {
         if (isActive)
         {

@@ -12,7 +12,7 @@ public class RocketTarget : MonoBehaviour
 
     public float updateVelocityValue;
     public float maxUpdateVelocityValue;
-    
+
     public bool handleVelocity;
 
     public Vector3 moveVector;
@@ -137,7 +137,6 @@ public class RocketTarget : MonoBehaviour
     void CheckForStuck()
     {
         // Check to see if rocket fixed with joint
-
         if (!stuck && gravityTarget.joint != null)
         {
             timeStuckLeft += Time.deltaTime;
@@ -275,7 +274,6 @@ public class RocketTarget : MonoBehaviour
         if (moveDirection != Vector2.zero)
         {
             float angle = Mathf.Atan2(-moveDirection.x, moveDirection.y) * Mathf.Rad2Deg;
-            //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             rigidBody.MoveRotation(Quaternion.AngleAxis(angle, Vector3.forward));
         }
     }

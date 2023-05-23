@@ -5,7 +5,7 @@ using UnityEngine;
 public class NoRotateTarget : MonoBehaviour
 {
     private Quaternion my_rotation;
-    
+
     void Start()
     {
         my_rotation = this.transform.rotation;

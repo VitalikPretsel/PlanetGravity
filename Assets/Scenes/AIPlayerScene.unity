@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numGenomes: 30
   numSimulate: 1
-  numExperiment: 10
+  numExperiment: 1
   mutationRate: 0.05
   crossoverRate: 0.5
   mutationChange: 0.001
@@ -641,7 +641,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263217138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.57, y: 0, z: 0}
+  m_LocalPosition: {x: 40.67, y: 0, z: 0}
   m_LocalScale: {x: 1.7371, y: 1.7371, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -665,8 +665,8 @@ MonoBehaviour:
   joint: {fileID: 0}
   isAttractee: 1
   isAttractor: 1
-  startingPosition: {x: 40.57, y: 0, z: 0}
-  initialVelocity: {x: 0, y: 878, z: 0}
+  startingPosition: {x: 40.67, y: 0, z: 0}
+  initialVelocity: {x: 0, y: 859, z: 0}
   applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 0
   handleCollidingGravity: 0
@@ -700,7 +700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39cc171afc507f46a197f7c15de2bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAngleSpeed: 0.36
+  rotationAngleSpeed: 0.3777
 --- !u!1 &1747200575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,7 +1372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39cc171afc507f46a197f7c15de2bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAngleSpeed: 9.838
+  rotationAngleSpeed: 10.3111
 --- !u!96 &1884565193
 TrailRenderer:
   serializedVersion: 2

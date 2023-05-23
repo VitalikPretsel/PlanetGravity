@@ -37,38 +37,37 @@ public class AIRocketController : MonoBehaviour
     {
         if (alive)
         {
-            // set inputs to network
+            // Set inputs to network
 
             List<double> input = new List<double>();
 
-            var normCoef = rocket.awayDistance;
-
+            // In case you need to add obstacles uncomment this
             //foreach (var obstacle in obstacles)
             //{
-            //    input.Add(ToNormValue(obstacle.rigidBody.position.x, normCoef));
-            //    input.Add(ToNormValue(obstacle.rigidBody.position.y, normCoef));
+            //    input.Add(ToNormValue(obstacle.rigidBody.position.x, rocket.awayDistance));
+            //    input.Add(ToNormValue(obstacle.rigidBody.position.y, rocket.awayDistance));
             //}
 
-            input.Add(ToNormValue(destination.rigidBody.position.x, normCoef));
-            input.Add(ToNormValue(destination.rigidBody.position.y, normCoef));
+            input.Add(ToNormValue(destination.rigidBody.position.x, rocket.awayDistance));
+            input.Add(ToNormValue(destination.rigidBody.position.y, rocket.awayDistance));
 
             input.Add(ToNormValue(destination.rigidBody.velocity.x, 20));
             input.Add(ToNormValue(destination.rigidBody.velocity.y, 20));
 
-            input.Add(ToNormValue(rocket.rigidBody.position.x, normCoef));
-            input.Add(ToNormValue(rocket.rigidBody.position.y, normCoef));
+            input.Add(ToNormValue(rocket.rigidBody.position.x, rocket.awayDistance));
+            input.Add(ToNormValue(rocket.rigidBody.position.y, rocket.awayDistance));
 
             input.Add(ToNormValue(rocket.rigidBody.velocity.x, 1000));
             input.Add(ToNormValue(rocket.rigidBody.velocity.y, 1000));
 
-            // get outputs from network
+            // Get outputs from network
 
             double[] output = network.Run(input);
 
             rocket.updateVelocityValue = ToUseValue((float)output[0], rocket.maxUpdateVelocityValue, 0, rocket.maxUpdateVelocityValue);
             rocket.moveVector = new Vector3((float)output[1], (float)output[2], 0);
 
-            // get fitness and check rocket status
+            // Get fitness and check rocket status
 
             CalculateFitness();
 
@@ -91,9 +90,8 @@ public class AIRocketController : MonoBehaviour
     private void CalculateFitness()
     {
         float distance = Vector3.Distance(rocket.rigidBody.position, destination.rigidBody.position);
-
         float fitnessValue = 1 / distance;
-
+        
         fitness = fitnessValue;
         if (fitness > bestFitness)
         {
@@ -104,7 +102,7 @@ public class AIRocketController : MonoBehaviour
     private float ToNormValue(float value, float coef, float? min = null, float? max = null)
     {
         var normval = value / coef;
-        
+
         min ??= -coef;
         max ??= coef;
 
@@ -112,7 +110,7 @@ public class AIRocketController : MonoBehaviour
             normval = (float)min;
         if (normval > max)
             normval = (float)max;
-        
+
         return normval;
     }
 
@@ -144,7 +142,7 @@ public class AIRocketController : MonoBehaviour
 
         rocket.handleVelocity = true;
         rocket.updateVelocityValue = 0;
-        
+
         rocketGravity.ResetPosition();
         rocket.ResetRocket();
 
@@ -152,7 +150,7 @@ public class AIRocketController : MonoBehaviour
 
         fitness = 0;
         bestFitness = 0;
-        
+
         hits = 0;
 
         if (resetPosition)

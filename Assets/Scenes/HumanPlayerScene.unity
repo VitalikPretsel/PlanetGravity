@@ -154,7 +154,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1165014337}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!199 &25321406
 ParticleSystemRenderer:
@@ -5561,8 +5561,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 880516893}
-  - {fileID: 1405980884}
   - {fileID: 25321405}
+  - {fileID: 1405980884}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5668,7 +5668,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263217138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.57, y: 0, z: 0}
+  m_LocalPosition: {x: 40.67, y: 0, z: 0}
   m_LocalScale: {x: 1.7371, y: 1.7371, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5693,7 +5693,7 @@ MonoBehaviour:
   isAttractee: 1
   isAttractor: 1
   startingPosition: {x: 0, y: 0, z: 0}
-  initialVelocity: {x: 0, y: 878, z: 0}
+  initialVelocity: {x: 0, y: 859, z: 0}
   applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 0
   handleCollidingGravity: 0
@@ -5727,7 +5727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39cc171afc507f46a197f7c15de2bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAngleSpeed: 0.36
+  rotationAngleSpeed: 0.3777
 --- !u!1 &1405980883
 GameObject:
   m_ObjectHideFlags: 0
@@ -5753,13 +5753,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1405980883}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 2.9214544, y: 2.9214544, z: 0.16818}
+  m_LocalScale: {x: 2.9214551, y: 2.9214551, z: 0.16818}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1165014337}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1405980885
 MonoBehaviour:
@@ -6487,7 +6487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39cc171afc507f46a197f7c15de2bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAngleSpeed: 9.838
+  rotationAngleSpeed: 10.3111
 --- !u!96 &1884565193
 TrailRenderer:
   serializedVersion: 2

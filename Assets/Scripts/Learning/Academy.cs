@@ -17,7 +17,7 @@ public class Academy : MonoBehaviour
     public bool resetPosition;
 
     public GameObject rocketFab;
-    
+
     GameObject[] rockets;
     AIRocketController[] rocketControllers;
 
@@ -84,7 +84,7 @@ public class Academy : MonoBehaviour
 
         foreach (AIRocketController rocket in rocketControllers)
         {
-            if (rocket.alive) 
+            if (rocket.alive)
             {
                 allRocketsDead = false;
 

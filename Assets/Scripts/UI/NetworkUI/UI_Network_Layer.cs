@@ -30,7 +30,5 @@ public class UI_Network_Layer : MonoBehaviour
         {
             nodes[i].DisplayConnections(i, currentLayer, nextLayer, network, scaleFactor);
         }
-            
     }
-
 }

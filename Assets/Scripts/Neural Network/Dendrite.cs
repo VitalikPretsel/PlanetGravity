@@ -6,8 +6,8 @@ public class Dendrite
 {
     public double weight;
 
-    public Dendrite(){ 
+    public Dendrite()
+    {
         this.weight = UnityEngine.Random.Range(-1f, 1f);
     }
-
 }

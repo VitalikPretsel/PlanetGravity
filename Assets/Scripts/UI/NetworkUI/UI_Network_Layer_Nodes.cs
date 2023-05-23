@@ -33,21 +33,23 @@ public class UI_Network_Layer_Nodes : MonoBehaviour
         //Set connection width
         Vector2 sizeDelta = connection.rectTransform.sizeDelta;
         double weight = weights[nodeIndex, connectedNodeIndex];
-        sizeDelta.x = (float)System.Math.Abs(weight*4);
+        sizeDelta.x = (float)System.Math.Abs(weight * 4);
         if (sizeDelta.x < 1)
             sizeDelta.x = 1;
 
         //Set conenction color
-        if (weight >= 0) {
+        if (weight >= 0)
+        {
             posColour.a = 1f;
             connection.color = posColour;
         }
-            
-        else {
+
+        else
+        {
             negColour.a = 1f;
             connection.color = negColour;
         }
-            
+
         //Set connection length (height)
         Vector2 connectionVec = this.transform.position - otherNode.transform.position;
         sizeDelta.y = connectionVec.magnitude / scaleFactor;
@@ -58,5 +60,4 @@ public class UI_Network_Layer_Nodes : MonoBehaviour
         float angle = Vector2.Angle(Vector2.up, connectionVec);
         connection.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0, 0, 1));
     }
-
 }

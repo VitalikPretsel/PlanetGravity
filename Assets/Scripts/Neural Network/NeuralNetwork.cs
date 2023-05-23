@@ -8,8 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class NeuralNetwork
 {
     public List<Layer> layers;
-    // The number of neurons in each layer
-    public int[] layerStructure;
+    public int[] layerStructure;    // number of neurons in layers
     public float fitness;
     public double fitnessRatio;
 
@@ -32,7 +31,7 @@ public class NeuralNetwork
         this.fitness = 0f;
         this.fitnessRatio = 0f;
 
-        // initalize our NN with layers of neurons
+        // Initalize NN with layers of neurons
         for (int i = 0; i < layers.Length; i++)
         {
             // Make a new layer with right number of neurons
@@ -45,18 +44,16 @@ public class NeuralNetwork
                 currentLayer.neurons.Add(new Neuron());
             }
 
-            // initalize neurons
+            // Initalize neurons
             foreach (Neuron neuron in currentLayer.neurons)
             {
-                // if we are the first layer set our bias to 0
-                if (i == 0)
+                if (i == 0) // if we are the first layer set our bias to 0
                 {
                     neuron.bias = 0;
                 }
                 else
                 {
-                    // For each neuron create dendrite to other neurons
-                    for (int d = 0; d < layers[i - 1]; d++)
+                    for (int d = 0; d < layers[i - 1]; d++) // for each neuron create dendrite to other neurons
                     {
                         neuron.dendrites.Add(new Dendrite());
                     }
@@ -65,8 +62,7 @@ public class NeuralNetwork
         }
     }
 
-    // Constructor reads in a specified filename and creates a NN from the 
-    // Encoded String
+    // Constructor reads in a specified filename and creates a NN from the encoded String
     public NeuralNetwork(String fileName)
     {
         string[] lines = File.ReadAllLines(fileName);
@@ -78,7 +74,7 @@ public class NeuralNetwork
             numStrucutre[i] = System.Convert.ToInt32(structure[i]);
         }
 
-        // Make a Neural Net with those specifications
+        // Make NN with those specifications
         NeuralNetwork NN = new NeuralNetwork(numStrucutre);
 
         // Get the encoded value
@@ -92,7 +88,7 @@ public class NeuralNetwork
 
         }
 
-        //Update our NN with the value
+        //Update NN with the value
         NN.Decode(encoded);
         this.layers = NN.layers;
         this.layerStructure = NN.layerStructure;
@@ -119,7 +115,7 @@ public class NeuralNetwork
         {
             for (int j = 0; j < layers[i].neurons.Count; j++)
             {
-                // Add the neruon's bias to the chromosome
+                // Add the neuron's bias to the chromosome
                 chromosome.Add(layers[i].neurons[j].bias);
                 // Add each weight input to the chromosome
                 for (int k = 0; k < layers[i].neurons[j].NumDendrites(); k++)
@@ -150,7 +146,6 @@ public class NeuralNetwork
                 }
             }
         }
-
     }
 
     // Run the NN
@@ -171,7 +166,7 @@ public class NeuralNetwork
             {
                 Neuron neuron = currentLayer.neurons[n];
 
-                // if first layer pass in input
+                // If first layer pass in input
                 if (l == 0)
                 {
                     neuron.value = input[n];
@@ -185,15 +180,7 @@ public class NeuralNetwork
                         neuron.value += this.layers[l - 1].neurons[lastNeuron].value * neuron.dendrites[lastNeuron].weight;
                     }
 
-                    // Call activation func
-                    if (l != layers.Count - 1)
-                    {
-                        neuron.value = Tanh(neuron.value + neuron.bias); // or sigmoid
-                    }
-                    else
-                    {
-                        neuron.value = Tanh(neuron.value + neuron.bias);
-                    }
+                    neuron.value = Tanh(neuron.value + neuron.bias); // or sigmoid
                 }
             }
         }
@@ -221,7 +208,7 @@ public class NeuralNetwork
         }
         write.Write(layerStructure[layerStructure.Length - 1] + "\n");
 
-        // Write out encode NN
+        // Write out encoded NN
         List<double> encoded = this.Encode();
         for (int i = 0; i < encoded.Count - 1; i++)
         {
@@ -231,6 +218,5 @@ public class NeuralNetwork
 
         write.Close();
     }
-
 }
 
