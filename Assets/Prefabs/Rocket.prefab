@@ -5167,7 +5167,7 @@ MonoBehaviour:
   idleTime: 1
   oldTime: 10
   stuckTime: 1
-  collideTime: 1
+  collideTime: 3
   awayDistance: 50
   crushCount: 5
   centerPosition: {x: 0, y: 0, z: 0}
