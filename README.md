@@ -108,9 +108,8 @@ Fitness is calculated as `f(x) = 1/x`, where `x` - distance between player (rock
 - Only highest value of experiment fitness is used, so for selection we consider value when rocket was closest to the Moon.
 - If rocket has died not with "away" or "hit" conditions, fitness is signed to 0.
 - For more than 1 experiment per genome, we calculate fitness for genome as avarage of all experiments.
-- For fitness function `tanh(x)` was used.
 
-## Examples of training Neural Network
+## Examples of Neural Network training
 ### Training with same starting Moon position
 For this training Moon resets its position with each new simulated genome and only one experiment per indiviudal is performed.
 This training is pretty simple and rocket learns to hit the Moon with every genome until 20 generation is reached. For this training using NN with structure `{ 8, 7, 3 }` and population size 30 is enough. (I actually think that we can use only 6 neurons for input, ignoring velocity of Moon values, position of Moon should be enough.)
