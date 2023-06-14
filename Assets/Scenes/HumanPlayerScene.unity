@@ -5378,6 +5378,7 @@ GameObject:
   - component: {fileID: 1165014334}
   - component: {fileID: 1165014333}
   - component: {fileID: 1165014332}
+  - component: {fileID: 1165014338}
   - component: {fileID: 1165014331}
   m_Layer: 0
   m_Name: Rocket
@@ -5411,31 +5412,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 0}
+  rocketDeath: {fileID: 0}
   updateVelocityValue: 0.005
   maxUpdateVelocityValue: 0.01
   handleVelocity: 1
   moveVector: {x: 0, y: 0, z: 0}
-  idleTime: 1
-  oldTime: 30
-  stuckTime: 1
-  collideTime: 1
-  awayDistance: 50
-  crushCount: 5
-  centerPosition: {x: 0, y: 0, z: 0}
-  destination: {fileID: 1263217138}
-  handleIdle: 1
-  handleOld: 1
-  handleStuck: 1
-  handleCollide: 1
-  handleAway: 1
-  handleCrush: 1
-  idle: 0
-  old: 0
-  stuck: 0
-  collided: 0
-  away: 0
-  crushed: 0
-  hit: 0
 --- !u!114 &1165014333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5452,9 +5433,8 @@ MonoBehaviour:
   joint: {fileID: 0}
   isAttractee: 1
   isAttractor: 0
-  startingPosition: {x: 0, y: 0, z: 0}
+  initialPosition: {x: 0, y: 0.6459, z: 0}
   initialVelocity: {x: 0, y: 0, z: 0}
-  applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 1
   handleCollidingGravity: 1
   handleCollidingJoint: 1
@@ -5566,6 +5546,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1165014338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165014330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa70532230f32a4d8edd3f7dbf435d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleTime: 5
+  oldTime: 10
+  stuckTime: 1
+  collideTime: 1
+  awayDistance: 50
+  crushCount: 10
+  centerPosition: {x: 0, y: 0, z: 0}
+  destination: {fileID: 1263217138}
+  handleIdle: 1
+  handleOld: 1
+  handleStuck: 1
+  handleCollide: 1
+  handleAway: 1
+  handleCrush: 1
 --- !u!1 &1263217138
 GameObject:
   m_ObjectHideFlags: 0
@@ -5692,9 +5698,8 @@ MonoBehaviour:
   joint: {fileID: 0}
   isAttractee: 1
   isAttractor: 1
-  startingPosition: {x: 0, y: 0, z: 0}
+  initialPosition: {x: 40.67, y: 0, z: 0}
   initialVelocity: {x: 0, y: 859, z: 0}
-  applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 0
   handleCollidingGravity: 0
   handleCollidingJoint: 0
@@ -6415,7 +6420,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: a1e04f9d0fb1d584f82d02cedb7a3045, type: 2}
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -6452,9 +6457,8 @@ MonoBehaviour:
   joint: {fileID: 0}
   isAttractee: 0
   isAttractor: 1
-  startingPosition: {x: 0, y: 0, z: 0}
+  initialPosition: {x: 0, y: 0, z: 0}
   initialVelocity: {x: 0, y: 0, z: 0}
-  applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 0
   handleCollidingGravity: 0
   handleCollidingJoint: 0
@@ -6468,7 +6472,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 1884565186}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: a1e04f9d0fb1d584f82d02cedb7a3045, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

@@ -5,7 +5,6 @@ using UnityEngine;
 public class TimeHandler : MonoBehaviour
 {
     public float time = 0f;
-
     public float timeScale = 1;
 
     void FixedUpdate()

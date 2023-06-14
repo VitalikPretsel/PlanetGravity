@@ -13,17 +13,14 @@ public class GravityTarget : MonoBehaviour
     public bool isAttractee;
     public bool isAttractor;
 
-    public Vector3 startingPosition;
+    public Vector3 initialPosition;
     public Vector3 initialVelocity;
-    public bool applyInitialVelocityOnStart;
 
     public bool handleCollidingVelocity;
     public bool handleCollidingGravity;
     public bool handleCollidingJoint;
 
     public bool isColliding;
-
-    private Vector3 savedVelocity;
 
     private bool clearTrail = false;
 
@@ -35,17 +32,13 @@ public class GravityTarget : MonoBehaviour
 
     void Start()
     {
-        if (applyInitialVelocityOnStart)
-        {
-            ApplyVelocity(initialVelocity);
-        }
+        ApplyVelocity(initialVelocity);
     }
 
     void FixedUpdate()
     {
-        savedVelocity = rigidBody.velocity;
-
         SetGravityState(!isColliding);
+
         if (joint != null)
         {
             joint.autoConfigureConnectedAnchor = false;
@@ -76,49 +69,56 @@ public class GravityTarget : MonoBehaviour
         if (handleCollidingGravity)
         {
             isColliding = true;
-            SetAsAttractee(false);
         }
         if (handleCollidingVelocity)
         {
             rigidBody.velocity = Vector3.zero;
             rigidBody.angularVelocity = 0;
-
-            collidedRigidbody.velocity = collision.gameObject.GetComponent<GravityTarget>().savedVelocity;
         }
         if (handleCollidingJoint)
         {
             if (joint == null)
             {
+                // Tried to use this code to make joints more realistic
+                //double massProduct = rigidBody.mass * collidedRigidbody.mass;
+                //Vector3 difference = rigidBody.position - collidedRigidbody.position;
+                //float distance = difference.magnitude;
+                //double unScaledforceMagnitude = massProduct / Math.Pow(distance, 2);
+                //double forceMagnitude = 1 * unScaledforceMagnitude;
+                //var breakForce = (float)forceMagnitude;
+                var breakForce = 0.1f;
+
                 joint = gameObject.AddComponent<FixedJoint2D>();
                 joint.connectedBody = collidedRigidbody;
-                joint.breakForce = 0.1f;
+                joint.breakForce = breakForce;
                 joint.enableCollision = true;
                 joint.autoConfigureConnectedAnchor = true;
             }
-
-            // Tried to use this code to make joints more realistic, guess we don't need to use joints at all for realistic simulations
-            //double massProduct = rigidBody.mass * collidedRigidbody.mass;
-            //Vector3 difference = rigidBody.position - collidedRigidbody.position;
-            //float distance = difference.magnitude;
-            //double unScaledforceMagnitude = massProduct / Math.Pow(distance, 2);
-            //double forceMagnitude = 1 * unScaledforceMagnitude;
-            //joint.breakForce = (float)forceMagnitude;
         }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
         isColliding = false;
-
-        if (handleCollidingGravity)
-        {
-            SetAsAttractee(isAttractee);
-        }
     }
 
     void ApplyVelocity(Vector3 velocity)
     {
         rigidBody.AddForce(initialVelocity, ForceMode2D.Impulse);
+    }
+
+    public void ResetPosition()
+    {
+        rigidBody.position = initialPosition;
+        rigidBody.velocity = Vector3.zero;
+        ApplyVelocity(initialVelocity);
+        transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+
+        joint = null;
+        isColliding = false;
+
+        trailRenderer.enabled = false;
+        clearTrail = true;
     }
 
     void SetAsAttractee(bool value)
@@ -134,21 +134,6 @@ public class GravityTarget : MonoBehaviour
         {
             GravityHandler.attractees.Remove(this);
         }
-    }
-
-    public void ResetPosition()
-    {
-        rigidBody.position = startingPosition;
-
-        joint = null;
-        isColliding = false;
-        SetAsAttractee(isAttractee);
-
-        rigidBody.velocity = Vector3.zero;
-        ApplyVelocity(initialVelocity);
-
-        trailRenderer.enabled = false;
-        clearTrail = true;
     }
 
     void SetAsAttractor(bool value)

@@ -5010,6 +5010,7 @@ GameObject:
   - component: {fileID: 1026480336076205487}
   - component: {fileID: 1026480336076205486}
   - component: {fileID: 1026480336076205483}
+  - component: {fileID: 1549678866780227696}
   - component: {fileID: 1026480336076205480}
   m_Layer: 7
   m_Name: Rocket
@@ -5140,9 +5141,8 @@ MonoBehaviour:
   joint: {fileID: 0}
   isAttractee: 1
   isAttractor: 0
-  startingPosition: {x: 0, y: 0.6459, z: 0}
+  initialPosition: {x: 0, y: 0.6459, z: 0}
   initialVelocity: {x: 0, y: 0, z: 0}
-  applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 1
   handleCollidingGravity: 1
   handleCollidingJoint: 0
@@ -5160,16 +5160,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 0}
+  rocketDeath: {fileID: 0}
   updateVelocityValue: 0
   maxUpdateVelocityValue: 0.005
   handleVelocity: 1
   moveVector: {x: 0, y: 1, z: 0}
-  idleTime: 1
-  oldTime: 10
+--- !u!114 &1549678866780227696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026480336076205489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa70532230f32a4d8edd3f7dbf435d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleTime: 3
+  oldTime: 5
   stuckTime: 1
-  collideTime: 3
+  collideTime: 1
   awayDistance: 50
-  crushCount: 5
+  crushCount: 10
   centerPosition: {x: 0, y: 0, z: 0}
   destination: {fileID: 0}
   handleIdle: 0
@@ -5178,13 +5191,6 @@ MonoBehaviour:
   handleCollide: 1
   handleAway: 1
   handleCrush: 0
-  idle: 0
-  old: 0
-  stuck: 0
-  collided: 0
-  away: 0
-  crushed: 0
-  hit: 0
 --- !u!114 &1026480336076205480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5208,6 +5214,5 @@ MonoBehaviour:
   destination: {fileID: 0}
   fitness: 0
   bestFitness: 0
-  alive: 1
-  wrong: 0
   hits: 0
+  alive: 1

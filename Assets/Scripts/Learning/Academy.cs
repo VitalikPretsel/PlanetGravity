@@ -46,38 +46,51 @@ public class Academy : MonoBehaviour
     public GameObject Network_GUI;
     private UI_Network networkUI;
 
-    private List<GravityTarget> obstacles = new List<GravityTarget>();
-    private GravityTarget destination;
-
     void Start()
     {
         EmptySaves();
 
-        obstacles.Add(GameObject.Find("Earth").GetComponent<GravityTarget>());
-        destination = GameObject.Find("Moon").GetComponent<GravityTarget>();
-
-        species = new GeneticController(numGenomes, mutationRate, crossoverRate, mutationChange);
-        rockets = new GameObject[numSimulate];
-        rocketControllers = new AIRocketController[numSimulate];
-
-        for (int i = 0; i < numSimulate; i++)
-        {
-            rockets[i] = Instantiate(rocketFab, rocketFab.GetComponent<GravityTarget>().startingPosition, rocketFab.transform.rotation);
-            rocketControllers[i] = rockets[i].GetComponent<AIRocketController>();
-            rocketControllers[i].network = species.population[i];
-        }
+        InitializeSpecies();
+        InitializeUI();
 
         currentGenome = numSimulate;
         batchSimulate = numSimulate;
-
-        Network_GUI = Instantiate(Network_GUI);
-        UI_Genetics genetics = Network_GUI.GetComponentInChildren<UI_Genetics>();
-        genetics.academy = this;
-        networkUI = Network_GUI.GetComponentInChildren<UI_Network>();
-        networkUI.Display(rocketControllers[0].network);
     }
 
     void FixedUpdate()
+    {
+        bool allRocketsDead = CheckRockets();
+
+        if (allRocketsDead)
+        {
+            Debug.Log("All Rockets Dead");
+
+            if (currentExperiment == numExperiment)
+            {
+                UpdateBestGenomeStats();
+
+                if (currentGenome == numGenomes)
+                {
+                    SaveBestNetwork();
+                    SaveStats();
+
+                    UpdateForNextGeneration();
+                }
+                else
+                {
+                    UpdateForNextBatch();
+                }
+
+                currentExperiment = 1;
+            }
+            else
+            {
+                UpdateForNextExperiment();
+            }
+        }
+    }
+
+    private bool CheckRockets()
     {
         bool allRocketsDead = true;
         float bestRocketFitness = 0;
@@ -107,97 +120,111 @@ public class Academy : MonoBehaviour
             }
         }
 
-        if (allRocketsDead)
+        return allRocketsDead;
+    }
+
+    private void UpdateBestGenomeStats()
+    {
+        foreach (AIRocketController rocket in rocketControllers)
         {
-            Debug.Log("All Rockets Dead");
-
-            if (currentExperiment == numExperiment)
+            if (rocket.network.fitness > bestGenomeFitness)
             {
-                foreach (AIRocketController rocket in rocketControllers)
-                {
-                    if (rocket.network.fitness > bestGenomeFitness)
-                    {
-                        bestGenomeFitness = rocket.network.fitness;
-                    }
-
-                    float hitsPercent = (float)rocket.hits / numExperiment;
-                    if (hitsPercent > bestGenomeHitsPercent)
-                    {
-                        bestGenomeHitsPercent = hitsPercent;
-                    }
-                }
-
-                if (currentGenome == numGenomes)
-                {
-                    foreach (var obstacle in obstacles)
-                    {
-                        obstacle.ResetPosition();
-                    }
-                    destination.ResetPosition();
-
-                    SaveBestNetwork();
-                    SaveStats();
-                    species.NextGeneration();
-
-                    lastGenerationAverageFitness = species.averageFitness;
-                    if (lastGenerationAverageFitness > bestGenerationAverageFitness)
-                    {
-                        bestGenerationAverageFitness = lastGenerationAverageFitness;
-                    }
-
-                    for (int i = 0; i < numSimulate; i++)
-                    {
-                        currentGenerationHitsNumber += rocketControllers[i].hits;
-                        rocketControllers[i].network = species.population[i];
-                        rocketControllers[i].Reset();
-                    }
-
-                    lastGenerationHitsPercent = currentGenerationHitsNumber / (numGenomes * numExperiment);
-                    if (lastGenerationHitsPercent > bestGenerationHitsPercent)
-                    {
-                        bestGenerationHitsPercent = lastGenerationHitsPercent;
-                    }
-                    currentGenerationHitsNumber = 0;
-
-                    currentGeneration++;
-                    currentGenome = numSimulate;
-                }
-                else
-                {
-                    if (currentGenome + numSimulate <= numGenomes)
-                    {
-                        Debug.Log("Full Sim");
-                        batchSimulate = numSimulate;
-                    }
-                    else
-                    {
-                        Debug.Log("Partial Sim");
-                        batchSimulate = numGenomes - currentGenome;
-                    }
-
-                    for (int i = 0; i < batchSimulate; i++)
-                    {
-                        currentGenerationHitsNumber += rocketControllers[i].hits;
-                        rocketControllers[i].network = species.population[currentGenome + i];
-                        rocketControllers[i].Reset();
-                    }
-
-                    currentGenome += batchSimulate;
-                }
-
-                currentExperiment = 1;
+                bestGenomeFitness = rocket.network.fitness;
             }
-            else
-            {
-                for (int i = 0; i < batchSimulate; i++)
-                {
-                    rocketControllers[i].ResetExp();
-                }
 
-                currentExperiment += 1;
+            float hitsPercent = (float)rocket.hits / numExperiment;
+            if (hitsPercent > bestGenomeHitsPercent)
+            {
+                bestGenomeHitsPercent = hitsPercent;
             }
         }
     }
+
+    private void UpdateForNextGeneration()
+    {
+        species.NextGeneration();
+
+        lastGenerationAverageFitness = species.averageFitness;
+        if (lastGenerationAverageFitness > bestGenerationAverageFitness)
+        {
+            bestGenerationAverageFitness = lastGenerationAverageFitness;
+        }
+
+        for (int i = 0; i < numSimulate; i++)
+        {
+            currentGenerationHitsNumber += rocketControllers[i].hits;
+            rocketControllers[i].network = species.population[i];
+            rocketControllers[i].ResetIndividual();
+        }
+
+        lastGenerationHitsPercent = currentGenerationHitsNumber / (numGenomes * numExperiment);
+        if (lastGenerationHitsPercent > bestGenerationHitsPercent)
+        {
+            bestGenerationHitsPercent = lastGenerationHitsPercent;
+        }
+        currentGenerationHitsNumber = 0;
+
+        currentGeneration += 1;
+        currentGenome = numSimulate;
+    }
+
+    private void UpdateForNextBatch()
+    {
+        if (currentGenome + numSimulate <= numGenomes)
+        {
+            Debug.Log("Full Sim");
+            batchSimulate = numSimulate;
+        }
+        else
+        {
+            Debug.Log("Partial Sim");
+            batchSimulate = numGenomes - currentGenome;
+        }
+
+        for (int i = 0; i < batchSimulate; i++)
+        {
+            currentGenerationHitsNumber += rocketControllers[i].hits;
+            rocketControllers[i].network = species.population[currentGenome + i];
+            rocketControllers[i].ResetIndividual();
+        }
+
+        currentGenome += batchSimulate;
+    }
+
+    private void UpdateForNextExperiment()
+    {
+        for (int i = 0; i < batchSimulate; i++)
+        {
+            rocketControllers[i].ResetExperiment();
+        }
+
+        currentExperiment += 1;
+    }
+
+
+    private void InitializeSpecies()
+    {
+        species = new GeneticController(numGenomes, mutationRate, crossoverRate, mutationChange);
+        rockets = new GameObject[numSimulate];
+        rocketControllers = new AIRocketController[numSimulate];
+
+        for (int i = 0; i < numSimulate; i++)
+        {
+            rockets[i] = Instantiate(rocketFab, rocketFab.GetComponent<GravityTarget>().initialPosition, rocketFab.transform.rotation);
+            rocketControllers[i] = rockets[i].GetComponent<AIRocketController>();
+            rocketControllers[i].network = species.population[i];
+        }
+    }
+
+    private void InitializeUI()
+    {
+        Network_GUI = Instantiate(Network_GUI);
+        UI_Genetics genetics = Network_GUI.GetComponentInChildren<UI_Genetics>();
+        genetics.academy = this;
+        networkUI = Network_GUI.GetComponentInChildren<UI_Network>();
+        networkUI.Display(rocketControllers[0].network);
+    }
+
 
     private void EmptySaves()
     {

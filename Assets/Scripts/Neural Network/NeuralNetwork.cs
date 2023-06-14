@@ -10,7 +10,6 @@ public class NeuralNetwork
     public List<Layer> layers;
     public int[] layerStructure;    // number of neurons in layers
     public float fitness;
-    public double fitnessRatio;
 
     public int NumLayers()
     {
@@ -29,7 +28,6 @@ public class NeuralNetwork
         this.layers = new List<Layer>();
         this.layerStructure = layers;
         this.fitness = 0f;
-        this.fitnessRatio = 0f;
 
         // Initalize NN with layers of neurons
         for (int i = 0; i < layers.Length; i++)
@@ -93,7 +91,6 @@ public class NeuralNetwork
         this.layers = NN.layers;
         this.layerStructure = NN.layerStructure;
         this.fitness = 0f;
-        this.fitnessRatio = 0f;
     }
 
     // Activation Functions
@@ -104,6 +101,10 @@ public class NeuralNetwork
     double Tanh(double x)
     {
         return System.Math.Tanh(x);
+    }
+    double TanhNorm(double x)
+    {
+        return System.Math.Tanh(x) / System.Math.Tanh(1);
     }
 
     // Encode Neural network into a chromosome that we can evolve
@@ -173,7 +174,7 @@ public class NeuralNetwork
                 }
                 else
                 {
-                    // Get wieghted value from all neruons connected to it
+                    // Get weighted value from all neruons connected to it
                     neuron.value = 0;
                     for (int lastNeuron = 0; lastNeuron < this.layers[l - 1].neurons.Count; lastNeuron++)
                     {

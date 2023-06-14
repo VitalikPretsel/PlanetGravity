@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class NoRotateTarget : MonoBehaviour
 {
-    private Quaternion my_rotation;
+    private Quaternion myRotation;
 
     void Start()
     {
-        my_rotation = this.transform.rotation;
+        myRotation = this.transform.rotation;
     }
 
     void FixedUpdate()
     {
-        this.transform.rotation = my_rotation;
+        this.transform.rotation = myRotation;
     }
 }

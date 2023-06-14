@@ -665,9 +665,8 @@ MonoBehaviour:
   joint: {fileID: 0}
   isAttractee: 1
   isAttractor: 1
-  startingPosition: {x: 40.67, y: 0, z: 0}
+  initialPosition: {x: 40.67, y: 0, z: 0}
   initialVelocity: {x: 0, y: 859, z: 0}
-  applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 0
   handleCollidingGravity: 0
   handleCollidingJoint: 0
@@ -1337,9 +1336,8 @@ MonoBehaviour:
   joint: {fileID: 0}
   isAttractee: 0
   isAttractor: 1
-  startingPosition: {x: 0, y: 0, z: 0}
+  initialPosition: {x: 0, y: 0, z: 0}
   initialVelocity: {x: 0, y: 0, z: 0}
-  applyInitialVelocityOnStart: 1
   handleCollidingVelocity: 0
   handleCollidingGravity: 0
   handleCollidingJoint: 0

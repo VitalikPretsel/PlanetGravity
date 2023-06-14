@@ -32,6 +32,8 @@ public class GravityHandler : MonoBehaviour
             {
                 if (attractor != attractee)
                 {
+                    // condition to avoid adding force when one object stuck inside another 
+
                     var dist = Vector3.Distance(attractor.rigidBody.position, attractee.rigidBody.position);
 
                     if (dist > attractor.GetComponent<Collider2D>().bounds.size.x && dist > attractor.GetComponent<Collider2D>().bounds.size.y
