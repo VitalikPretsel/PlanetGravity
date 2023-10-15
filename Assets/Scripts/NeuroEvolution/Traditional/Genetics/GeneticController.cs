@@ -46,7 +46,7 @@ public class GeneticController
         }
     }
 
-    public NeuralNetwork[] Breed(NeuralNetwork parent1, NeuralNetwork parent2)
+    private NeuralNetwork[] Breed(NeuralNetwork parent1, NeuralNetwork parent2)
     {
         var siblings = new NeuralNetwork[] { 
             new NeuralNetwork(parent1.layerStructure), 
@@ -61,7 +61,7 @@ public class GeneticController
         return siblings;
     }
 
-    public void Mutate(NeuralNetwork creature)
+    private void Mutate(NeuralNetwork creature)
     {
         creature.Decode(
             Mutation(creature.Encode(), mutationRate, mutationChange));
@@ -73,7 +73,7 @@ public class GeneticController
 
         nextGeneration = new List<NeuralNetwork>();
 
-        population.Sort((x, y) => y.fitness.CompareTo(x.fitness));
+        population.Sort((x, y) => y.Fitness.CompareTo(x.Fitness));
         nextGeneration.Add(population[0]);  // to guarantee that best solution survives
 
         List<List<int>> selectedIndexes = Selection(population);
@@ -95,12 +95,12 @@ public class GeneticController
         }
     }
 
-    public void CalculateFitnessStats()
+    private void CalculateFitnessStats()
     {
         populationFitness = 0f;
         for (int i = 0; i < population.Count; i++)
         {
-            populationFitness += population[i].fitness;
+            populationFitness += population[i].Fitness;
         }
 
         averageFitness = (float)(populationFitness / population.Count);

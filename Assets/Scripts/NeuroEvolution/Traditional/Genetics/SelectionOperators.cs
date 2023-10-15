@@ -12,7 +12,7 @@ public static class SelectionOperators
         double sum = 0;
         foreach (var individual in population)
         {
-            sum += individual.fitness;
+            sum += individual.Fitness;
             cumulativeFitness.Add(sum);
         }
         cumulativeFitness = cumulativeFitness.Select(f => f / sum).ToList();

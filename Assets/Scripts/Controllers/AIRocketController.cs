@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class AIRocketController : MonoBehaviour
 {
-    public NeuralNetwork network = null;
+    public INeuralNetwork network = null;
 
     public RocketTarget rocket;
 
@@ -29,7 +29,7 @@ public class AIRocketController : MonoBehaviour
 
         // obstacles.Add(GameObject.Find("Earth").GetComponent<GravityTarget>());
 
-        var academy = GameObject.Find("Academy").GetComponent<Academy>();
+        var academy = GameObject.Find("Academy").GetComponent<Academy_2>();
         numExperiment = academy.numExperiment;
         resetPosition = academy.resetPosition;
     }
@@ -135,14 +135,15 @@ public class AIRocketController : MonoBehaviour
         rocket.rigidBody.velocity = Vector3.zero;
         rocket.rigidBody.simulated = false;
 
-        network.fitness += bestFitness / numExperiment; // to get avarage for all experiments
+        network.Fitness += bestFitness / numExperiment; // to get avarage for all experiments
+        //network.Fitness = bestFitness;
     }
 
     public void ResetIndividual()
     {
         ResetExperiment();
 
-        network.fitness = 0;
+        network.Fitness = 0;
         hits = 0;
 
         if (resetPosition)

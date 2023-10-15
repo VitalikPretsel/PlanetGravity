@@ -5,11 +5,11 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 [Serializable]
-public class NeuralNetwork
+public class NeuralNetwork: INeuralNetwork
 {
     public List<Layer> layers;
     public int[] layerStructure;    // number of neurons in layers
-    public float fitness;
+    public float Fitness { get; set; }
 
     public int NumLayers()
     {
@@ -27,7 +27,7 @@ public class NeuralNetwork
 
         this.layers = new List<Layer>();
         this.layerStructure = layers;
-        this.fitness = 0f;
+        this.Fitness = 0f;
 
         // Initalize NN with layers of neurons
         for (int i = 0; i < layers.Length; i++)
@@ -90,7 +90,7 @@ public class NeuralNetwork
         NN.Decode(encoded);
         this.layers = NN.layers;
         this.layerStructure = NN.layerStructure;
-        this.fitness = 0f;
+        this.Fitness = 0f;
     }
 
     // Activation Functions
