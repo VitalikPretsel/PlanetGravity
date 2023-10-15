@@ -201,6 +201,9 @@ public class Network : IComparable<Network>, INeuralNetwork
         while (copyList.Count != 0)
         {
             List<Node> removeNodes = new List<Node>();
+            
+            bool allNotReady = true;
+
             foreach (Node node in copyList)
             {
                 if (node.Ready())
@@ -208,7 +211,15 @@ public class Network : IComparable<Network>, INeuralNetwork
                     node.CalculateValue();
                     node.TransmitValue();
                     removeNodes.Add(node);
+                    allNotReady = false;
                 }
+            }
+
+            if (allNotReady)
+            {
+                copyList[0].CalculateValue();
+                copyList[0].TransmitValue();
+                removeNodes.Add(copyList[0]);
             }
 
             foreach (Node node in removeNodes)

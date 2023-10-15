@@ -170,15 +170,6 @@ MonoBehaviour:
   numGenomes: 30
   numSimulate: 1
   numExperiment: 1
-  C1: 1
-  C2: 1
-  C3: 0.3
-  compatibilityThreshold: 3
-  survivalChance: 0.1
-  weightMutationChance: 0.8
-  randomWeightChance: 0.1
-  addNodeChance: 0.03
-  addConnectionChance: 0.05
   resetPosition: 1
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
   cameraTarget: {fileID: 925159474}
@@ -196,6 +187,16 @@ MonoBehaviour:
   bestGenomeHitsPercent: 0
   lastGenerationHitsPercent: 0
   bestGenerationHitsPercent: 0
+  Network_GUI: {fileID: 7079019132684391397, guid: e928ec3b33433d5449627878157c179c, type: 3}
+  C1: 1
+  C2: 1
+  C3: 0.3
+  compatibilityThreshold: 3
+  survivalChance: 0.1
+  weightMutationChance: 0.8
+  randomWeightChance: 0.1
+  addNodeChance: 0.03
+  addConnectionChance: 0.05
 --- !u!1 &457671240
 GameObject:
   m_ObjectHideFlags: 0

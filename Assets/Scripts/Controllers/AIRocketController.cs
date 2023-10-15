@@ -12,8 +12,7 @@ public class AIRocketController : MonoBehaviour
     public List<GravityTarget> obstacles;
     public GravityTarget destination;
     
-    private int numExperiment;
-    private bool resetPosition;
+    public int numExperiment;
 
     public float fitness;
     public float bestFitness;
@@ -28,10 +27,6 @@ public class AIRocketController : MonoBehaviour
         rocket.rocketDeath.destination = moon;
 
         // obstacles.Add(GameObject.Find("Earth").GetComponent<GravityTarget>());
-
-        var academy = GameObject.Find("Academy").GetComponent<Academy_2>();
-        numExperiment = academy.numExperiment;
-        resetPosition = academy.resetPosition;
     }
 
     void FixedUpdate()
@@ -145,15 +140,6 @@ public class AIRocketController : MonoBehaviour
 
         network.Fitness = 0;
         hits = 0;
-
-        if (resetPosition)
-        {
-            foreach (var obstacle in obstacles)
-            {
-                obstacle.ResetPosition();
-            }
-            destination.ResetPosition();
-        }
     }
 
     public void ResetExperiment()

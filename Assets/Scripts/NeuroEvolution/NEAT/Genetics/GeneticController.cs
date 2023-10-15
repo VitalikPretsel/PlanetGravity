@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class GeneticController_2
+public class GeneticController_2 : IGeneticController<Network>
 {
+    public List<Network> Networks { get; set; }
+
     private List<Genome> genomes;
-    public List<Network> nets;
     private Dictionary<Genome, Network> networkMap;
     private Dictionary<Genome, Species> speciesMap;
     private List<Species> speciesList;
@@ -26,7 +27,7 @@ public class GeneticController_2
     public int outputNodes = 3;
 
     public float populationFitness;
-    public float averageFitness;
+    public float AverageFitness { get; set; }
 
     // Constructor creates randomly weighted neural networks
     public GeneticController_2(
@@ -53,7 +54,7 @@ public class GeneticController_2
         this.population = popSize;
 
         this.populationFitness = 0f;
-        this.averageFitness = 0f;
+        this.AverageFitness = 0f;
 
         genomes = new List<Genome>();
         speciesList = new List<Species>();
@@ -86,7 +87,7 @@ public class GeneticController_2
 
         for (int i = 0; i < (int)(population * survivalChance); i++)
         {
-            nextGenomes.Add(nets[i].genome);
+            nextGenomes.Add(Networks[i].genome);
         }
 
         System.Random r = new System.Random();
@@ -204,25 +205,25 @@ public class GeneticController_2
 
     private void SortNets()
     {
-        foreach (Network net in nets)
+        foreach (Network net in Networks)
         {
             net.Fitness = (net.Fitness / speciesMap[net.genome].GetCount());
             speciesMap[net.genome].AddFitness(net.Fitness);
         }
 
-        nets.Sort();
+        Networks.Sort();
         speciesList.Sort();
     }
 
     private void MakeNetworks()
     {
-        nets = new List<Network>();
+        Networks = new List<Network>();
         networkMap = new Dictionary<Genome, Network>();
 
         foreach (Genome genome in genomes)
         {
             Network net = new Network(genome);
-            nets.Add(net);
+            Networks.Add(net);
             networkMap.Add(genome, net);
         }
     }
@@ -230,11 +231,11 @@ public class GeneticController_2
     private void CalculateFitnessStats()
     {
         populationFitness = 0f;
-        for (int i = 0; i < nets.Count; i++)
+        for (int i = 0; i < Networks.Count; i++)
         {
-            populationFitness += nets[i].Fitness;
+            populationFitness += Networks[i].Fitness;
         }
 
-        averageFitness = (float)(populationFitness / nets.Count);
+        AverageFitness = (float)(populationFitness / Networks.Count);
     }
 }

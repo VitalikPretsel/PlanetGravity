@@ -4,6 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Genetics : Abstract_UI_Genetics<NeuralNetwork> 
+public class UI_Genetics_NEAT : Abstract_UI_Genetics<Network> 
 {
 }
