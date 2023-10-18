@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 public class GenomeUtils
 {
-    public static float CompatiblityDistance(Genome g1, Genome g2, float c1, float c2, float c3)
+    public static double CompatiblityDistance(Genome g1, Genome g2, float c1, float c2, float c3)
     {
-        float distance;
+        double distance;
         int[] disjointExcess = DisjointAndExcess(g1.GetConnections(), g2.GetConnections(), g1.GetMaxInnovation(), g2.GetMaxInnovation());
         int disjointGenes = disjointExcess[0];
         int excessGenes = disjointExcess[1];
-        float avgWeightDifference = AverageWeightDifference(g1.GetConnections(), g2.GetConnections());
+        double avgWeightDifference = AverageWeightDifference(g1.GetConnections(), g2.GetConnections());
 
         distance = c1 * excessGenes + c2 * disjointGenes + c3 * avgWeightDifference;
 
@@ -52,10 +52,10 @@ public class GenomeUtils
         return number;
     }
 
-    public static float AverageWeightDifference(Dictionary<int, Genome.ConnectionGene> d1, Dictionary<int, Genome.ConnectionGene> d2)
+    public static double AverageWeightDifference(Dictionary<int, Genome.ConnectionGene> d1, Dictionary<int, Genome.ConnectionGene> d2)
     {
         int matchingGenes = 0;
-        float weightDifference = 0f;
+        double weightDifference = 0f;
         foreach (Genome.ConnectionGene con1 in d1.Values)
         {
             if (d2.ContainsKey(con1.GetInnovation()))
@@ -64,7 +64,7 @@ public class GenomeUtils
                 weightDifference += Math.Abs(con1.GetWeight() - d2[con1.GetInnovation()].GetWeight());
             }
         }
-        float avgWeightDifference = weightDifference / matchingGenes;
+        double avgWeightDifference = weightDifference / matchingGenes;
         return avgWeightDifference;
     }
 

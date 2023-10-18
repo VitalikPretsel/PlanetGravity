@@ -164,11 +164,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 351216993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d91e3abb94c5caa42915a98dacd6fdf3, type: 3}
+  m_Script: {fileID: 11500000, guid: afa627d4334edfb40a224d6a959d0f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numGenomes: 30
-  numSimulate: 1
+  numGenomes: 100
+  numSimulate: 20
   numExperiment: 1
   resetPosition: 1
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
@@ -193,7 +193,8 @@ MonoBehaviour:
   C3: 0.3
   compatibilityThreshold: 3
   survivalChance: 0.1
-  weightMutationChance: 0.8
+  weightMutationChance: 0.08
+  weightMutationChange: 0.001
   randomWeightChance: 0.1
   addNodeChance: 0.03
   addConnectionChance: 0.05

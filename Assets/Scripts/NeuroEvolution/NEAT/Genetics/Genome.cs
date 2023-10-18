@@ -29,7 +29,7 @@ public class Genome
             nodeList.Add(new NodeGene(i, NodeGene.TYPE.OUTPUT));
             for (int j = 1; j <= inputNodes; j++)
             {
-                float weight = (float)((r.NextDouble() * 2) - 1);
+                double weight = ((r.NextDouble() * 2) - 1);
                 connectionList.Add(innovation, new ConnectionGene(j, i, weight, true, innovation));
                 connectionKeys.Add(innovation);
                 innovation++;
@@ -64,18 +64,20 @@ public class Genome
         connectionKeys.Add(con.GetInnovation());
     }
 
-    public void Mutate(float randomChance, Random r)
+    public void Mutate(float randomChance, float weightMutationChange, Random r)
     {
         foreach (ConnectionGene con in connectionList.Values)
         {
-            if (r.NextDouble() < randomChance)
-            {
-                con.RandomWeight(r);
-            }
-            else
-            {
-                con.PerturbWeight(r);
-            }
+            //if (r.NextDouble() < randomChance)
+            //{
+            //    con.RandomWeight(r);
+            //}
+            //else
+            //{
+            //    con.PerturbWeight(r);
+            //}
+            
+            con.MyWeightMutation(weightMutationChange, r);
         }
     }
 
@@ -133,7 +135,7 @@ public class Genome
             type2 = tmpType;
         }
 
-        float weight = (float)((r.NextDouble() * 2) - 1);
+        double weight = ((r.NextDouble() * 2) - 1);
         int innovation = InnovationGenerator.GetInnovation();
         connectionList.Add(innovation, new ConnectionGene(node1 + 1, node2 + 1, weight, true, innovation));
         connectionKeys.Add(innovation);
@@ -175,11 +177,11 @@ public class Genome
     {
         private int inNode;         //input node
         private int outNode;        //output node 
-        private float weight;       //connection weight
+        private double weight;       //connection weight
         private bool expressed;     //is the connection enabled or disabled
         private int innovation;     //innovation number of connection
 
-        public ConnectionGene(int inNode, int outNode, float weight, bool expressed, int innovation)     //constructor
+        public ConnectionGene(int inNode, int outNode, double weight, bool expressed, int innovation)     //constructor
         {
             this.inNode = inNode;
             this.outNode = outNode;
@@ -204,12 +206,26 @@ public class Genome
 
         public void RandomWeight(Random r)
         {
-            weight = (float)(r.NextDouble() * 2 - 1);
+            weight = (r.NextDouble() * 2 - 1);
         }
 
         public void PerturbWeight(Random r)
         {
-            weight += (float)(r.NextDouble() - 0.5) * 0.5f;
+            weight += (r.NextDouble() - 0.5) * 0.5f;
+        }
+
+        public void MyWeightMutation(float weightMutationChange, Random r)
+        {
+            weight += weightMutationChange * (r.NextDouble() * 2 - 1);
+
+            if (weight > 1)
+            {
+                weight = 1;
+            }
+            else if (weight < -1)
+            {
+                weight = -1;
+            }
         }
 
         public int GetInNode()
@@ -222,7 +238,7 @@ public class Genome
             return outNode;
         }
 
-        public float GetWeight()
+        public double GetWeight()
         {
             return weight;
         }

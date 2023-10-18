@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class Network : IComparable<Network>, INeuralNetwork
+public class NeuralNetworkNEAT : IComparable<NeuralNetworkNEAT>, INeuralNetwork
 {
     public Genome genome { get; set; }
     private List<Genome.NodeGene> nodeGenes;
@@ -13,7 +13,7 @@ public class Network : IComparable<Network>, INeuralNetwork
     private List<Node> hiddenNodes;
     public float Fitness { get; set; }
 
-    public Network(Genome gen)
+    public NeuralNetworkNEAT(Genome gen)
     {
         nodes = new Dictionary<int, Node>();
         inputNodes = new List<Node>();
@@ -237,7 +237,7 @@ public class Network : IComparable<Network>, INeuralNetwork
         return output;
     }
 
-    public int CompareTo(Network other)
+    public int CompareTo(NeuralNetworkNEAT other)
     {
         return other.Fitness.CompareTo(Fitness);
     }

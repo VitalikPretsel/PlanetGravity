@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class Academy_2 : AbstractAcademy<Network>
+public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 {
     public float C1 = 1f;
     public float C2 = 1f;
@@ -12,22 +12,24 @@ public class Academy_2 : AbstractAcademy<Network>
 
     public float compatibilityThreshold = 3f;
     public float survivalChance = 0.1f;
-    public float weightMutationChance = 0.8f;
-    public float randomWeightChance = 0.1f;
-    public float addNodeChance = 0.03f;
-    public float addConnectionChance = 0.05f;
+    public float weightMutationChance = 0.05f;
+    public float weightMutationChange = 0.005f;
+    public float randomWeightChance = 0.01f;
+    public float addNodeChance = 0.001f;
+    public float addConnectionChance = 0.0015f;
 
 
     protected override void InitializeSpecies()
     {
-        species = new GeneticController_2(
+        species = new GeneticControllerNEAT(
             numGenomes,
             C1,
             C2,
             C3,
             compatibilityThreshold,
             survivalChance, 
-            weightMutationChance, 
+            weightMutationChance,
+            weightMutationChange,
             randomWeightChance, 
             addNodeChance, 
             addConnectionChance);

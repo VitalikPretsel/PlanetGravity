@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class GeneticController_2 : IGeneticController<Network>
+public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
 {
-    public List<Network> Networks { get; set; }
+    public List<NeuralNetworkNEAT> Networks { get; set; }
 
     private List<Genome> genomes;
-    private Dictionary<Genome, Network> networkMap;
+    private Dictionary<Genome, NeuralNetworkNEAT> networkMap;
     private Dictionary<Genome, Species> speciesMap;
     private List<Species> speciesList;
 
@@ -16,12 +16,13 @@ public class GeneticController_2 : IGeneticController<Network>
     public float C2 = 1f;
     public float C3 = 0.3f;
 
-    public float compatibilityThreshold = 3f;
-    public float survivalChance = 0.1f;
-    public float weightMutationChance = 0.8f;
-    public float randomWeightChance = 0.1f;
-    public float addNodeChance = 0.03f;
-    public float addConnectionChance = 0.05f;
+    public float compatibilityThreshold;
+    public float survivalChance;
+    public float weightMutationChance;
+    public float weightMutationChange;
+    public float randomWeightChance;
+    public float addNodeChance;
+    public float addConnectionChance;
 
     public int inputNodes = 8;
     public int outputNodes = 3;
@@ -30,14 +31,15 @@ public class GeneticController_2 : IGeneticController<Network>
     public float AverageFitness { get; set; }
 
     // Constructor creates randomly weighted neural networks
-    public GeneticController_2(
+    public GeneticControllerNEAT(
         int popSize,
         float C1,
         float C2,
         float C3,
         float compatibilityThreshold,
         float survivalChance, 
-        float weightMutationChance, 
+        float weightMutationChance,
+        float weightMutationChange,
         float randomWeightChance, 
         float addNodeChance, 
         float addConnectionChance)
@@ -48,6 +50,7 @@ public class GeneticController_2 : IGeneticController<Network>
         this.compatibilityThreshold = compatibilityThreshold;
         this.survivalChance = survivalChance;
         this.weightMutationChance = weightMutationChance;
+        this.weightMutationChange = weightMutationChange;
         this.randomWeightChance = randomWeightChance;
         this.addNodeChance = addNodeChance;
         this.addConnectionChance = addConnectionChance;
@@ -137,7 +140,7 @@ public class GeneticController_2 : IGeneticController<Network>
 
             if (roll < weightMutationChance)
             {
-                genome.Mutate(randomWeightChance, r);
+                genome.Mutate(randomWeightChance, weightMutationChange, r);
             }
             else if (roll < weightMutationChance + addNodeChance)
             {
@@ -168,7 +171,7 @@ public class GeneticController_2 : IGeneticController<Network>
             bool found = false;
             foreach (Species species in speciesList)
             {
-                float distance = GenomeUtils.CompatiblityDistance(gen, species.GetMascot(), C1, C2, C3);
+                double distance = GenomeUtils.CompatiblityDistance(gen, species.GetMascot(), C1, C2, C3);
                 if (distance < compatibilityThreshold)
                 {
                     species.AddMember(gen);
@@ -205,7 +208,7 @@ public class GeneticController_2 : IGeneticController<Network>
 
     private void SortNets()
     {
-        foreach (Network net in Networks)
+        foreach (NeuralNetworkNEAT net in Networks)
         {
             net.Fitness = (net.Fitness / speciesMap[net.genome].GetCount());
             speciesMap[net.genome].AddFitness(net.Fitness);
@@ -217,12 +220,12 @@ public class GeneticController_2 : IGeneticController<Network>
 
     private void MakeNetworks()
     {
-        Networks = new List<Network>();
-        networkMap = new Dictionary<Genome, Network>();
+        Networks = new List<NeuralNetworkNEAT>();
+        networkMap = new Dictionary<Genome, NeuralNetworkNEAT>();
 
         foreach (Genome genome in genomes)
         {
-            Network net = new Network(genome);
+            NeuralNetworkNEAT net = new NeuralNetworkNEAT(genome);
             Networks.Add(net);
             networkMap.Add(genome, net);
         }
