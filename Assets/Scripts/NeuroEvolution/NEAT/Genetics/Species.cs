@@ -4,11 +4,15 @@ using System.Collections.Generic;
 public class Species : IComparable<Species>
 {
     private Genome mascot;
-    private List<Genome> members;
+    public List<Genome> members;
     private float fitness;
+    public UnityEngine.Color color;
+
 
     public Species(Genome firstMember)
     {
+        color = new UnityEngine.Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
+        firstMember.color = color;
         members = new List<Genome>
             {
                 firstMember
@@ -29,6 +33,7 @@ public class Species : IComparable<Species>
 
     public void AddMember(Genome genome)
     {
+        genome.color = color;
         members.Add(genome);
     }
 

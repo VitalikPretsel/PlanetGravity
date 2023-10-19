@@ -48,6 +48,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
 
         InitializeSpecies();
         InitializeUI();
+        UpdateGenerationUI();
 
         currentGenome = numSimulate;
         batchSimulate = numSimulate;
@@ -73,6 +74,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
                     SaveStats();
 
                     UpdateForNextGeneration();
+                    UpdateGenerationUI();
                 }
                 else
                 {
@@ -199,6 +201,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
             currentGenerationHitsNumber += rocketControllers[i].hits;
             rocketControllers[i].network = species.Networks[currentGenome + i];
             rocketControllers[i].ResetIndividual();
+            UpdateRocketAdditionally(rocketControllers[i]);
 
             if (resetPosition)
             {
@@ -234,6 +237,10 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
     protected abstract void InitializeUI();
     
     protected abstract void UpdateNetworkUI(AIRocketController rocket);
+
+    protected virtual void UpdateGenerationUI() { return; }
+
+    protected virtual void UpdateRocketAdditionally(AIRocketController rocket) { return; }
 
 
     private void EmptySaves()

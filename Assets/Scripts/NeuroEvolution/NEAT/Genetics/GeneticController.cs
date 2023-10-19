@@ -8,7 +8,7 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
     private List<Genome> genomes;
     private Dictionary<Genome, NeuralNetworkNEAT> networkMap;
     private Dictionary<Genome, Species> speciesMap;
-    private List<Species> speciesList;
+    public List<Species> speciesList;
 
     public int population;
 

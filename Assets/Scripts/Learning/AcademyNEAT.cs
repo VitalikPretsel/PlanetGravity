@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 {
@@ -20,22 +21,28 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
     public float addNodeChance = 0.001f;
     public float addConnectionChance = 0.0015f;
 
+    public GameObject speciesMarker;
     public GameObject networkUIPrefab;
-    protected GameObject networkUI;
+    private GameObject networkUI;
+    private TextureDraw textureDraw;
+
 
     protected override void InitializeSpecies()
     {
+        textureDraw = GetComponent<TextureDraw>();
+        textureDraw.SetPopSize(numGenomes);
+
         species = new GeneticControllerNEAT(
             numGenomes,
             C1,
             C2,
             C3,
             compatibilityThreshold,
-            survivalChance, 
+            survivalChance,
             weightMutationChance,
             weightMutationChange,
-            randomWeightChance, 
-            addNodeChance, 
+            randomWeightChance,
+            addNodeChance,
             addConnectionChance);
         rockets = new GameObject[numSimulate];
         rocketControllers = new AIRocketController[numSimulate];
@@ -46,6 +53,7 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
             rocketControllers[i] = rockets[i].GetComponent<AIRocketController>();
             rocketControllers[i].numExperiment = numExperiment;
             rocketControllers[i].network = species.Networks[i];
+            UpdateRocketAdditionally(rocketControllers[i]);
         }
     }
 
@@ -58,6 +66,7 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 
     protected override void UpdateNetworkUI(AIRocketController rocket)
     {
+        speciesMarker.GetComponent<Image>().color = (rocket.network as NeuralNetworkNEAT).genome.color;
         if (updateNetUI)
         {
             if (networkUI != null) { Destroy(networkUI); }
@@ -67,5 +76,15 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
             Canvas.ForceUpdateCanvases();
             ui.DrawConnections(rocket.network as NeuralNetworkNEAT);
         }
+    }
+
+    protected override void UpdateGenerationUI()
+    {
+        textureDraw.AddColorData(new SpeciesColorData((species as GeneticControllerNEAT).speciesList));
+    }
+
+    protected override void UpdateRocketAdditionally(AIRocketController rocket) 
+    {
+        rocket.rocket.UpdateRocketColor((rocket.network as NeuralNetworkNEAT).genome.color); 
     }
 }

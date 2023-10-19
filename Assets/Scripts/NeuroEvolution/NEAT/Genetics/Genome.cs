@@ -7,6 +7,7 @@ public class Genome
     private List<int> connectionKeys;                           //list of innovation numbers of connections
     private List<NodeGene> nodeList;                            //a list of node genes
     private Dictionary<int, ConnectionGene> connectionList;     //a map of connection genes
+    public UnityEngine.Color color;
 
     public Genome()                                             //makes an empty genome
     {
