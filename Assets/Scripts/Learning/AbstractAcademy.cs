@@ -51,6 +51,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
 
         currentGenome = numSimulate;
         batchSimulate = numSimulate;
+        currentExperiment = 1;
     }
 
     void FixedUpdate()
@@ -60,6 +61,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
         if (allRocketsDead)
         {
             Debug.Log("All Rockets Dead");
+            bestRocket = null;
 
             if (currentExperiment == numExperiment)
             {
@@ -86,7 +88,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
         }
     }
 
-    protected virtual bool CheckRockets()
+    private bool CheckRockets()
     {
         bool allRocketsDead = true;
         float bestRocketFitness = 0;
@@ -101,17 +103,27 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
                 if (rocket.fitness > bestRocketFitness)
                 {
                     bestRocketFitness = rocket.fitness;
-                    bestRocket = rocket;
                     currentExperimentFitness = bestRocketFitness;
-                    currentGenomeHitsNumber = bestRocket.hits;
+                    currentGenomeHitsNumber = rocket.hits;
 
-                    cameraTarget.target = rocket.transform;
-                    //networkUI.DrawConnections(rocket.network);
+                    if (rocket != bestRocket)
+                    {
+                        bestRocket = rocket;
+                        cameraTarget.target = rocket.transform;
+                        UpdateNetworkUI(rocket);
+                    }
 
                     if (rocket.fitness > bestExperimentFitness)
                     {
                         bestExperimentFitness = rocket.fitness;
                     }
+                }
+            }
+            else
+            {
+                if (rocket == bestRocket)
+                {
+                    bestRocket = null;
                 }
             }
         }
@@ -220,6 +232,8 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
     protected abstract void InitializeSpecies();
 
     protected abstract void InitializeUI();
+    
+    protected abstract void UpdateNetworkUI(AIRocketController rocket);
 
 
     private void EmptySaves()

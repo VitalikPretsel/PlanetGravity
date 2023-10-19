@@ -108,6 +108,18 @@ public class Genome
         int node1 = r.Next(nodeList.Count);
         int node2 = r.Next(nodeList.Count);
 
+        if (node1 == node2) // prevent cycle connection
+        {
+            if (node1 == 0) 
+            {
+                node2 += 1;
+            }
+            else
+            {
+                node1 -= 1;
+            }
+        }
+
         NodeGene.TYPE type1 = nodeList[node1].GetNodeType();
         NodeGene.TYPE type2 = nodeList[node2].GetNodeType();
 

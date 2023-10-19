@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [Serializable]
 public class NeuralNetworkNEAT : IComparable<NeuralNetworkNEAT>, INeuralNetwork
@@ -7,7 +8,7 @@ public class NeuralNetworkNEAT : IComparable<NeuralNetworkNEAT>, INeuralNetwork
     public Genome genome { get; set; }
     private List<Genome.NodeGene> nodeGenes;
     private Dictionary<int, Genome.ConnectionGene> connectionGenes;
-    private Dictionary<int, Node> nodes;
+    public Dictionary<int, Node> nodes;
     private List<Node> inputNodes;
     private List<Node> outputNodes;
     private List<Node> hiddenNodes;
@@ -31,7 +32,7 @@ public class NeuralNetworkNEAT : IComparable<NeuralNetworkNEAT>, INeuralNetwork
         int ID;
         double value;
         List<Connection> inConnections;
-        List<Connection> outConnections;
+        public List<Connection> outConnections;
 
         public Node(int id)
         {
@@ -97,6 +98,18 @@ public class NeuralNetworkNEAT : IComparable<NeuralNetworkNEAT>, INeuralNetwork
             }
             value = 0;
         }
+
+        public int GetLevel(Dictionary<int, Node> nodes)
+        {
+            if (inConnections.Any())
+            {
+                return inConnections.Select(c => nodes[c.GetInNode()].GetLevel(nodes)).Max() + 1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
     }
 
     public class Connection
@@ -104,7 +117,7 @@ public class NeuralNetworkNEAT : IComparable<NeuralNetworkNEAT>, INeuralNetwork
         private int inNode;
         private int outNode;
         private double value;
-        private double weight;
+        public double weight;
         private bool ready;
 
         public Connection(int input, int output, double weight)
@@ -235,6 +248,11 @@ public class NeuralNetworkNEAT : IComparable<NeuralNetworkNEAT>, INeuralNetwork
         }
 
         return output;
+    }
+
+    public int LayersCount()
+    {
+        return nodes.Select(n => n.Value.GetLevel(nodes)).Max();
     }
 
     public int CompareTo(NeuralNetworkNEAT other)

@@ -12,38 +12,6 @@ public class Academy : AbstractAcademy<NeuralNetwork>
 
     protected UI_Network networkUI;
 
-    protected override bool CheckRockets()
-    {
-        bool allRocketsDead = true;
-        float bestRocketFitness = 0;
-
-        foreach (AIRocketController rocket in rocketControllers)
-        {
-            if (rocket.alive)
-            {
-                allRocketsDead = false;
-
-                // find best rocket
-                if (rocket.fitness > bestRocketFitness)
-                {
-                    bestRocketFitness = rocket.fitness;
-                    bestRocket = rocket;
-                    currentExperimentFitness = bestRocketFitness;
-                    currentGenomeHitsNumber = bestRocket.hits;
-
-                    cameraTarget.target = rocket.transform;
-                    networkUI.DrawConnections(rocket.network as NeuralNetwork);
-
-                    if (rocket.fitness > bestExperimentFitness)
-                    {
-                        bestExperimentFitness = rocket.fitness;
-                    }
-                }
-            }
-        }
-
-        return allRocketsDead;
-    }
 
     protected override void InitializeSpecies()
     {
@@ -66,6 +34,11 @@ public class Academy : AbstractAcademy<NeuralNetwork>
         UI_Genetics genetics = Network_GUI.GetComponentInChildren<UI_Genetics>();
         genetics.academy = this;
         networkUI = Network_GUI.GetComponentInChildren<UI_Network>();
-        networkUI.Display(rocketControllers[0].network as NeuralNetwork); // "as"???
+        networkUI.Display(rocketControllers[0].network as NeuralNetwork);
+    }
+
+    protected override void UpdateNetworkUI(AIRocketController rocket)
+    {
+        networkUI.DrawConnections(rocket.network as NeuralNetwork);
     }
 }

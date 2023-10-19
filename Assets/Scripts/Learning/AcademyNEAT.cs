@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 {
+    public bool updateNetUI = false;
+
     public float C1 = 1f;
     public float C2 = 1f;
     public float C3 = 0.3f;
@@ -18,6 +20,8 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
     public float addNodeChance = 0.001f;
     public float addConnectionChance = 0.0015f;
 
+    public GameObject networkUIPrefab;
+    protected GameObject networkUI;
 
     protected override void InitializeSpecies()
     {
@@ -50,5 +54,18 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
         Network_GUI = Instantiate(Network_GUI);
         UI_Genetics_NEAT genetics = Network_GUI.GetComponentInChildren<UI_Genetics_NEAT>();
         genetics.academy = this;
+    }
+
+    protected override void UpdateNetworkUI(AIRocketController rocket)
+    {
+        if (updateNetUI)
+        {
+            if (networkUI != null) { Destroy(networkUI); }
+            networkUI = Instantiate(networkUIPrefab);
+            var ui = networkUI.GetComponentInChildren<UI_Network_NEAT>();
+            ui.Display(rocket.network as NeuralNetworkNEAT);
+            Canvas.ForceUpdateCanvases();
+            ui.DrawConnections(rocket.network as NeuralNetworkNEAT);
+        }
     }
 }

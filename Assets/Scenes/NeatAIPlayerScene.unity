@@ -188,6 +188,7 @@ MonoBehaviour:
   lastGenerationHitsPercent: 0
   bestGenerationHitsPercent: 0
   Network_GUI: {fileID: 7079019132684391397, guid: e928ec3b33433d5449627878157c179c, type: 3}
+  updateNetUI: 0
   C1: 1
   C2: 1
   C3: 0.3
@@ -196,8 +197,9 @@ MonoBehaviour:
   weightMutationChance: 0.08
   weightMutationChange: 0.001
   randomWeightChance: 0.1
-  addNodeChance: 0.03
-  addConnectionChance: 0.05
+  addNodeChance: 0.015
+  addConnectionChance: 0.025
+  networkUIPrefab: {fileID: 7079019132684391397, guid: 3674a9104dc750540b97c52aa61d994a, type: 3}
 --- !u!1 &457671240
 GameObject:
   m_ObjectHideFlags: 0
