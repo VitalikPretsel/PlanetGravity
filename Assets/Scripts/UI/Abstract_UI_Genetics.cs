@@ -45,5 +45,11 @@ public abstract class Abstract_UI_Genetics<T> : MonoBehaviour where T : INeuralN
         bestGenomeHitsPercent.text = "Best Genome Hits: " + Math.Round(academy.bestGenomeHitsPercent * 100, 2) + "%";
         lastGenerationHitsPercent.text = "Last Generation Hits: " + Math.Round(academy.lastGenerationHitsPercent * 100, 2) + "%";
         bestGenerationHitsPercent.text = "Best Generation Hits: " + Math.Round(academy.bestGenerationHitsPercent * 100, 2) + "%";
+
+        AdditionalUpdate();
+    }
+
+    protected virtual void AdditionalUpdate()
+    {
     }
 }

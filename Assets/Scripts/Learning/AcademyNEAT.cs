@@ -21,7 +21,6 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
     public float addNodeChance = 0.001f;
     public float addConnectionChance = 0.0015f;
 
-    public GameObject speciesMarker;
     public GameObject networkUIPrefab;
     private GameObject networkUI;
     private TextureDraw textureDraw;
@@ -66,10 +65,9 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 
     protected override void UpdateNetworkUI(AIRocketController rocket)
     {
-        speciesMarker.GetComponent<Image>().color = (rocket.network as NeuralNetworkNEAT).genome.color;
+        if (networkUI != null) { Destroy(networkUI); }
         if (updateNetUI)
         {
-            if (networkUI != null) { Destroy(networkUI); }
             networkUI = Instantiate(networkUIPrefab);
             var ui = networkUI.GetComponentInChildren<UI_Network_NEAT>();
             ui.Display(rocket.network as NeuralNetworkNEAT);
