@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq; 
 
 public class Genome
 {
@@ -108,16 +109,10 @@ public class Genome
         int node1 = r.Next(nodeList.Count);
         int node2 = r.Next(nodeList.Count);
 
-        if (node1 == node2) // prevent cycle connection
+        if (node1 == node2) // prevent self connection
         {
-            if (node1 == 0) 
-            {
-                node2 += 1;
-            }
-            else
-            {
-                node1 -= 1;
-            }
+            AddConnectionMutation(r);                                                  //try again with a random a pair
+            return;
         }
 
         NodeGene.TYPE type1 = nodeList[node1].GetNodeType();
@@ -137,7 +132,7 @@ public class Genome
             }
         }
 
-        if (type1 == NodeGene.TYPE.OUTPUT || type1 == NodeGene.TYPE.HIDDEN && type2 == NodeGene.TYPE.INPUT)         //Switch nodes if they are reversed
+        if (type1 == NodeGene.TYPE.OUTPUT || (type1 == NodeGene.TYPE.HIDDEN && type2 == NodeGene.TYPE.INPUT))         //Switch nodes if they are reversed
         {
             int tmp = node1;
             NodeGene.TYPE tmpType = type1;
@@ -145,6 +140,12 @@ public class Genome
             type1 = type2;
             node2 = tmp;
             type2 = tmpType;
+        }
+
+        if (ConnectionGene.IsAddingCycle(connectionList, node2 + 1, node1 + 1))
+        {
+            AddConnectionMutation(r);                                                  //try again with a random a pair
+            return;
         }
 
         double weight = ((r.NextDouble() * 2) - 1);
@@ -263,6 +264,26 @@ public class Genome
         public int GetInnovation()
         {
             return innovation;
+        }
+
+        public static bool IsAddingCycle(Dictionary<int, ConnectionGene> connectionList, int node, int nodeToCheck)
+        {
+            var inConnections = connectionList.Where(c => c.Value.inNode == node);
+
+            if (inConnections.Any(c => c.Value.outNode == nodeToCheck))
+            {
+                return true;
+            }
+
+            foreach (var connection in inConnections)
+            {
+                if (IsAddingCycle(connectionList, connection.Value.outNode, nodeToCheck))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
