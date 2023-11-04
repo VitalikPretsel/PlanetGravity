@@ -125,7 +125,6 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
             {
                 child = GenomeUtils.Crossover(parent1, parent2, r);
             }
-
             else
             {
                 child = GenomeUtils.Crossover(parent2, parent1, r);

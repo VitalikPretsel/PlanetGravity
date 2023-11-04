@@ -41,4 +41,11 @@ public class Academy : AbstractAcademy<NeuralNetwork>
     {
         networkUI.DrawConnections(rocket.network as NeuralNetwork);
     }
+
+    protected override void UpdateGeneticControllerParameters()
+    {
+        ((GeneticController)species).mutationRate = mutationRate;
+        ((GeneticController)species).crossoverRate = crossoverRate;
+        ((GeneticController)species).mutationChange = mutationChange;
+    }
 }

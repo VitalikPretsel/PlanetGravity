@@ -39,7 +39,7 @@ public class TextureDraw : MonoBehaviour
         float offsetVertical = this.screenHeight * 0.62f;
         float offsetHorizontal = Screen.width * 0.73f;
 
-        float height = (screenHeight * 0.02f);
+        float height = (screenHeight * 0.015f);
 
 
         GUI.color = backgroundColor;

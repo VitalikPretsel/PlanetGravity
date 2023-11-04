@@ -75,6 +75,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
 
                     UpdateForNextGeneration();
                     UpdateGenerationUI();
+                    UpdateGeneticControllerParameters();
                 }
                 else
                 {
@@ -242,8 +243,9 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
 
     protected virtual void UpdateRocketAdditionally(AIRocketController rocket) { return; }
 
+    protected virtual void UpdateGeneticControllerParameters() { return; }
 
-    private void EmptySaves()
+    protected virtual void EmptySaves()
     {
         if (Directory.Exists("./Saves"))
         {
@@ -260,7 +262,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
     //    species.Networks.OrderByDescending(n => n.Fitness).FirstOrDefault().Save(currentGeneration);
     //}
 
-    private void SaveStats()
+    protected virtual void SaveStats()
     {
         StreamWriter fitWriter = new StreamWriter("./Saves/FitnessSaves/fits.csv", true);
         StreamWriter hitWriter = new StreamWriter("./Saves/HitsSaves/hits.csv", true);
