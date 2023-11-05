@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
 {
@@ -17,12 +18,14 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
     public float C3 = 0.3f;
 
     public float compatibilityThreshold;
-    public float survivalChance;
     public float weightMutationChance;
     public float weightMutationChange;
+    public float eachWeightMutationChance;
     public float randomWeightChance;
     public float addNodeChance;
     public float addConnectionChance;
+    public float crossoverRate;
+    public float interSpeciesCrossoverRate;
 
     public int inputNodes = 8;
     public int outputNodes = 3;
@@ -37,23 +40,27 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
         float C2,
         float C3,
         float compatibilityThreshold,
-        float survivalChance, 
         float weightMutationChance,
         float weightMutationChange,
+        float eachWeightMutationChance,
         float randomWeightChance, 
         float addNodeChance, 
-        float addConnectionChance)
+        float addConnectionChance,
+        float crossoverRate,
+        float interSpeciesCrossoverRate)
     {
         this.C1 = C1;
         this.C2 = C2;
         this.C3 = C3;
         this.compatibilityThreshold = compatibilityThreshold;
-        this.survivalChance = survivalChance;
         this.weightMutationChance = weightMutationChance;
         this.weightMutationChange = weightMutationChange;
+        this.eachWeightMutationChance = eachWeightMutationChance;
         this.randomWeightChance = randomWeightChance;
         this.addNodeChance = addNodeChance;
         this.addConnectionChance = addConnectionChance;
+        this.crossoverRate = crossoverRate;
+        this.interSpeciesCrossoverRate = interSpeciesCrossoverRate;
         this.population = popSize;
 
         this.populationFitness = 0f;
@@ -76,78 +83,79 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
     public void NextGeneration()
     {
         CalculateFitnessStats();
-
         SortNets();
 
-        float totalFitness = 0;
-        float leftPopulation = population * (1 - survivalChance);
         List<Genome> nextGenomes = new List<Genome>();
 
+        // save best in each species 
+        int speciesChampionsCount = 0;
         foreach (Species species in speciesList)
         {
-            totalFitness += species.GetFitness();
+            if (species.members.Count > 5)
+            {
+                var ordered = species.members.OrderByDescending(g => networkMap[g].Fitness).Select(g => networkMap[g]);
+                var selected = species.members.OrderByDescending(g => networkMap[g].Fitness).First();
+                var network = networkMap[selected];
+                nextGenomes.Add(species.members.OrderByDescending(g => networkMap[g].Fitness).First());
+                speciesChampionsCount += 1;
+            }
         }
 
-        for (int i = 0; i < (int)(population * survivalChance); i++)
-        {
-            nextGenomes.Add(Networks[i].genome);
-        }
+        //// save best without mating and mutations
+        //for (int i = 0; i < (int)(population * survivalChance); i++)
+        //{
+        //    nextGenomes.Add(Networks[i].genome);
+        //}
 
         System.Random r = new System.Random();
 
-        foreach (Species species in speciesList)
+        // selection and mating
+        List<double> cumulativeFitness = new List<double>();
+        double sum = 0;
+        foreach (var individual in speciesList)
         {
-            for (int i = 0; i < (int)(species.GetFitness() / totalFitness * leftPopulation); i++)
-            {
-                Genome parent1 = species.GetRandomGenome(r);
-                Genome parent2 = species.GetRandomGenome(r);
-                Genome child = new Genome();
-
-                if (networkMap[parent1].Fitness > networkMap[parent2].Fitness)
-                {
-                    child = GenomeUtils.Crossover(parent1, parent2, r);
-                }
-                else
-                {
-                    child = GenomeUtils.Crossover(parent2, parent1, r);
-                }
-                nextGenomes.Add(child);
-            }
+            sum += individual.GetFitness();
+            cumulativeFitness.Add(sum);
         }
+        cumulativeFitness = cumulativeFitness.Select(f => f / sum).ToList();
 
         while (nextGenomes.Count < population)
         {
-            Genome parent1 = speciesList[0].GetRandomGenome(r);
-            Genome parent2 = speciesList[0].GetRandomGenome(r);
-            Genome child = new Genome();
+            var index = PickIndexFromCumulFitness(cumulativeFitness, r);
 
-            if (networkMap[parent1].Fitness > networkMap[parent2].Fitness)
+            if (r.NextDouble() < crossoverRate)
             {
-                child = GenomeUtils.Crossover(parent1, parent2, r);
+                var index2 = index;
+
+                if (r.NextDouble() < interSpeciesCrossoverRate)
+                {
+                    index2 = PickIndexFromCumulFitness(cumulativeFitness, r);
+                }
+
+                nextGenomes.Add(CrossoverFromSpecies(speciesList[index], speciesList[index2], r));
             }
             else
             {
-                child = GenomeUtils.Crossover(parent2, parent1, r);
+                nextGenomes.Add(CopyGenome(speciesList[index], r));
             }
-
-            nextGenomes.Add(child);
         }
 
-        foreach (Genome genome in nextGenomes)
+        // mutation
+        for (int i = speciesChampionsCount; i < nextGenomes.Count; i++)
         {
             double roll = r.NextDouble();
 
             if (roll < weightMutationChance)
             {
-                genome.Mutate(randomWeightChance, weightMutationChange, r);
+                nextGenomes[i].Mutate(eachWeightMutationChance, randomWeightChance, weightMutationChange, r);
             }
             else if (roll < weightMutationChance + addNodeChance)
             {
-                genome.AddNodeMutation(r);
+                nextGenomes[i].AddNodeMutation(r);
             }
             else if (roll < weightMutationChance + addNodeChance + addConnectionChance)
             {
-                genome.AddConnectionMutation(r);
+                nextGenomes[i].AddConnectionMutation(r);
             }
         }
 
@@ -160,6 +168,56 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
 
         AssignSpecies();
         MakeNetworks();
+    }
+
+    private Genome CrossoverFromSpecies(Species species1, Species species2, System.Random r)
+    {
+        Genome parent1 = species1.GetRandomGenome(r);
+        Genome parent2 = species2.GetRandomGenome(r);
+
+        if (networkMap[parent1].Fitness > networkMap[parent2].Fitness)
+        {
+            return GenomeUtils.Crossover(parent1, parent2, r);
+        }
+        else
+        {
+            return GenomeUtils.Crossover(parent2, parent1, r);
+        }
+    }
+
+    private Genome CopyGenome(Species species, System.Random r)
+    {
+        var parent = species.GetRandomGenome(r);
+        
+        Genome child = new Genome();
+
+        List<Genome.NodeGene> nodes = parent.GetNodes();
+        Dictionary<int, Genome.ConnectionGene> connections = parent.GetConnections();
+
+        foreach (Genome.NodeGene node in nodes)
+        {
+            child.AddNode(node);
+        }
+
+        foreach (Genome.ConnectionGene con in connections.Values)
+        {
+            child.AddConnection(con);
+        }
+
+        return child;
+    }
+
+    private int PickIndexFromCumulFitness(List<double> cumulativeFitness, System.Random r)
+    {
+        var rand = r.NextDouble();
+        var index = 0;
+
+        while (rand > cumulativeFitness[index])
+        {
+            index++;
+        }
+
+        return index;
     }
 
     private void AssignSpecies()

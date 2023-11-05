@@ -190,6 +190,7 @@ MonoBehaviour:
   bestGenerationHitsPercent: 0
   Network_GUI: {fileID: 7079019132684391397, guid: e928ec3b33433d5449627878157c179c, type: 3}
   updateNetUI: 0
+  autoUpdateParameters: 1
   C1: 1
   C2: 1
   C3: 0.3
@@ -200,6 +201,10 @@ MonoBehaviour:
   randomWeightChance: 0.1
   addNodeChance: 0.015
   addConnectionChance: 0.025
+  crossoverRate: 0.75
+  interSpeciesCrossoverRate: 0.001
+  noFitImproveMaxCount: 100
+  noFitImproveCount: 0
   networkUIPrefab: {fileID: 7079019132684391397, guid: 3674a9104dc750540b97c52aa61d994a, type: 3}
 --- !u!114 &351216997
 MonoBehaviour:

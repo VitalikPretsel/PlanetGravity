@@ -71,20 +71,21 @@ public class Genome
         connectionKeys.Add(con.GetInnovation());
     }
 
-    public void Mutate(float randomChance, float weightMutationChange, Random r)
+    public void Mutate(float eachWeightMutationChance, float randomWeightChance, float weightMutationChange, Random r)
     {
         foreach (ConnectionGene con in connectionList.Values)
         {
-            //if (r.NextDouble() < randomChance)
-            //{
-            //    con.RandomWeight(r);
-            //}
-            //else
-            //{
-            //    con.PerturbWeight(r);
-            //}
-            
-            con.MyWeightMutation(weightMutationChange, r);
+            if (r.NextDouble() < eachWeightMutationChance)
+            {
+                if (r.NextDouble() < randomWeightChance)
+                {
+                    con.RandomWeight(r);
+                }
+                else
+                {
+                    con.PerturbWeight(weightMutationChange, r);
+                }
+            }
         }
     }
 
@@ -228,12 +229,7 @@ public class Genome
             weight = (r.NextDouble() * 2 - 1);
         }
 
-        public void PerturbWeight(Random r)
-        {
-            weight += (r.NextDouble() - 0.5) * 0.5f;
-        }
-
-        public void MyWeightMutation(float weightMutationChange, Random r)
+        public void PerturbWeight(float weightMutationChange, Random r)
         {
             weight += weightMutationChange * (r.NextDouble() * 2 - 1);
 

@@ -10,17 +10,23 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
     public bool updateNetUI = false;
     public bool autoUpdateParameters = false;
 
+
     public float C1 = 1f;
     public float C2 = 1f;
     public float C3 = 0.3f;
 
     public float compatibilityThreshold = 3f;
-    public float survivalChance = 0.1f;
-    public float weightMutationChance = 0.05f;
+
+    public float weightMutationChance = 0.8f;
     public float weightMutationChange = 0.005f;
-    public float randomWeightChance = 0.01f;
+    public float eachWeightMutationChance = 0.05f;
+    public float randomWeightChance = 0.05f;
     public float addNodeChance = 0.001f;
     public float addConnectionChance = 0.0015f;
+
+    public float crossoverRate = 0.75f;
+    public float interSpeciesCrossoverRate = 0.001f;
+
 
     public int noFitImproveMaxCount = 100;
     public int noFitImproveCount = 0; 
@@ -41,12 +47,14 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
             C2,
             C3,
             compatibilityThreshold,
-            survivalChance,
             weightMutationChance,
             weightMutationChange,
+            eachWeightMutationChance,
             randomWeightChance,
             addNodeChance,
-            addConnectionChance);
+            addConnectionChance,
+            crossoverRate,
+            interSpeciesCrossoverRate);
         rockets = new GameObject[numSimulate];
         rocketControllers = new AIRocketController[numSimulate];
 
@@ -93,12 +101,14 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
     protected override void UpdateGeneticControllerParameters() 
     {
         ((GeneticControllerNEAT)species).compatibilityThreshold = compatibilityThreshold;
-        ((GeneticControllerNEAT)species).survivalChance = survivalChance;
         ((GeneticControllerNEAT)species).weightMutationChance = weightMutationChance;
         ((GeneticControllerNEAT)species).weightMutationChange = weightMutationChange;
+        ((GeneticControllerNEAT)species).eachWeightMutationChance = eachWeightMutationChance;
         ((GeneticControllerNEAT)species).randomWeightChance = randomWeightChance;
         ((GeneticControllerNEAT)species).addNodeChance = addNodeChance;
         ((GeneticControllerNEAT)species).addConnectionChance = addConnectionChance;
+        ((GeneticControllerNEAT)species).crossoverRate = crossoverRate;
+        ((GeneticControllerNEAT)species).interSpeciesCrossoverRate = interSpeciesCrossoverRate;
 
         if (autoUpdateParameters)
         {
@@ -128,8 +138,30 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
                         addConnectionChance = 0;
                     }
 
+                    if (randomWeightChance > 0.0001)
+                    {
+                        randomWeightChance /= 2;
+                    }
+                    else
+                    {
+                        randomWeightChance = 0;
+                    }
+
                     if (addNodeChance == 0 && addConnectionChance == 0)
                     {
+                        //if (eachWeightMutationChance > 0.01)
+                        //{
+                        //    eachWeightMutationChance /= 2;
+                        //    if (eachWeightMutationChance < 0.01)
+                        //    {
+                        //        eachWeightMutationChance = 0.01;
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    eachWeightMutationChance = 0.01;
+                        //}
+
                         weightMutationChange /= 2;
                     }
                 }
