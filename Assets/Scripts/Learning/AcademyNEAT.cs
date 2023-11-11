@@ -178,6 +178,7 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
         base.EmptySaves();
 
         Directory.CreateDirectory("./Saves/ParamsSaves");
+        Directory.CreateDirectory("./Saves/SpeciesSaves");
     }
 
 
@@ -186,9 +187,15 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
         base.SaveStats();
 
         StreamWriter paramsWriter = new StreamWriter("./Saves/ParamsSaves/params.csv", true);
-        
         paramsWriter.Write($"{addNodeChance}, {addConnectionChance}, {weightMutationChange} \n");
-
         paramsWriter.Close();
+
+        StreamWriter speciesWriter = new StreamWriter("./Saves/SpeciesSaves/species.csv", true);
+        foreach (var s in ((GeneticControllerNEAT)species).speciesList)
+        {
+            speciesWriter.Write(s.members.Count + ", #" + ColorUtility.ToHtmlStringRGB(s.color) + ", ");
+        }
+        speciesWriter.Write("\n");
+        speciesWriter.Close();
     }
 }

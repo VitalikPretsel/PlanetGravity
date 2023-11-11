@@ -93,9 +93,6 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
         {
             if (species.members.Count > 5)
             {
-                var ordered = species.members.OrderByDescending(g => networkMap[g].Fitness).Select(g => networkMap[g]);
-                var selected = species.members.OrderByDescending(g => networkMap[g].Fitness).First();
-                var network = networkMap[selected];
                 nextGenomes.Add(species.members.OrderByDescending(g => networkMap[g].Fitness).First());
                 speciesChampionsCount += 1;
             }

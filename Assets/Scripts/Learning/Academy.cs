@@ -10,6 +10,10 @@ public class Academy : AbstractAcademy<NeuralNetwork>
     public float crossoverRate = 0.5F;
     public float mutationChange = 0.001F;
 
+    public bool autoUpdateParameters = false;
+    public int noFitImproveMaxCount = 100;
+    public int noFitImproveCount = 0;
+
     protected UI_Network networkUI;
 
 
@@ -47,5 +51,23 @@ public class Academy : AbstractAcademy<NeuralNetwork>
         ((GeneticController)species).mutationRate = mutationRate;
         ((GeneticController)species).crossoverRate = crossoverRate;
         ((GeneticController)species).mutationChange = mutationChange;
+
+        if (autoUpdateParameters)
+        {
+            if (lastGenerationAverageFitness < bestGenerationAverageFitness)
+            {
+                noFitImproveCount += 1;
+
+                if (noFitImproveCount >= noFitImproveMaxCount)
+                {
+                    noFitImproveCount = 0;
+                    mutationChange /= 2;
+                }
+            }
+            else
+            {
+                noFitImproveCount = 0;
+            }
+        }
     }
 }

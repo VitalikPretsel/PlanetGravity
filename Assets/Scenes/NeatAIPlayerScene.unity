@@ -195,15 +195,15 @@ MonoBehaviour:
   C2: 1
   C3: 0.3
   compatibilityThreshold: 3
-  survivalChance: 0.1
-  weightMutationChance: 0.1
-  weightMutationChange: 0.001
-  randomWeightChance: 0.1
+  weightMutationChance: 0.8
+  weightMutationChange: 0.005
+  eachWeightMutationChance: 0.05
+  randomWeightChance: 0.05
   addNodeChance: 0.015
   addConnectionChance: 0.025
   crossoverRate: 0.75
   interSpeciesCrossoverRate: 0.001
-  noFitImproveMaxCount: 100
+  noFitImproveMaxCount: 15
   noFitImproveCount: 0
   networkUIPrefab: {fileID: 7079019132684391397, guid: 3674a9104dc750540b97c52aa61d994a, type: 3}
 --- !u!114 &351216997
