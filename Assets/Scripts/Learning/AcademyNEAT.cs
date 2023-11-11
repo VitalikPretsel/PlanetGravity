@@ -35,6 +35,11 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
     private GameObject networkUI;
     private TextureDraw textureDraw;
 
+    public UnityEngine.Color currentColor;
+    public float currentNodesCount = 0;
+    public float currentConnectionsCount = 0;
+    public float averageNodesCount = 0;
+    public float averageConnectionsCount = 0;
 
     protected override void InitializeSpecies()
     {
@@ -66,6 +71,17 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
             rocketControllers[i].network = species.Networks[i];
             UpdateRocketAdditionally(rocketControllers[i]);
         }
+
+        averageNodesCount = ((GeneticControllerNEAT)species).AverageNodesCount;
+        averageConnectionsCount = ((GeneticControllerNEAT)species).AverageConnectionsCount;
+    }
+
+    protected override void UpdateForNextGeneration()
+    {
+        base.UpdateForNextGeneration();
+
+        averageNodesCount = ((GeneticControllerNEAT)species).AverageNodesCount;
+        averageConnectionsCount = ((GeneticControllerNEAT)species).AverageConnectionsCount;
     }
 
     protected override void InitializeUI()
@@ -77,6 +93,10 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 
     protected override void UpdateNetworkUI(AIRocketController rocket)
     {
+        currentNodesCount = (rocket.network as NeuralNetworkNEAT).genome.GetNodesCount();
+        currentConnectionsCount = (rocket.network as NeuralNetworkNEAT).genome.GetConnectionsCount();
+        currentColor = (rocket.network as NeuralNetworkNEAT).genome.color;
+        
         if (networkUI != null) { Destroy(networkUI); }
         if (updateNetUI)
         {

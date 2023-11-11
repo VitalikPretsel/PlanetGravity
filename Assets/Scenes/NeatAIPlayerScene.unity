@@ -193,9 +193,9 @@ MonoBehaviour:
   autoUpdateParameters: 1
   C1: 1
   C2: 1
-  C3: 0.3
+  C3: 1
   compatibilityThreshold: 3
-  weightMutationChance: 0.8
+  weightMutationChance: 0.3
   weightMutationChange: 0.005
   eachWeightMutationChance: 0.05
   randomWeightChance: 0.05
@@ -203,9 +203,14 @@ MonoBehaviour:
   addConnectionChance: 0.025
   crossoverRate: 0.75
   interSpeciesCrossoverRate: 0.001
-  noFitImproveMaxCount: 15
+  noFitImproveMaxCount: 10
   noFitImproveCount: 0
   networkUIPrefab: {fileID: 7079019132684391397, guid: 3674a9104dc750540b97c52aa61d994a, type: 3}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
+  currentNodesCount: 0
+  currentConnectionsCount: 0
+  averageNodesCount: 0
+  averageConnectionsCount: 0
 --- !u!114 &351216997
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -33,6 +33,9 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
     public float populationFitness;
     public float AverageFitness { get; set; }
 
+    public float AverageNodesCount { get => genomes.Select(g => (float)g.GetNodesCount()).Average(); }
+    public float AverageConnectionsCount { get => genomes.Select(g => (float)g.GetConnectionsCount()).Average(); }
+
     // Constructor creates randomly weighted neural networks
     public GeneticControllerNEAT(
         int popSize,
@@ -166,6 +169,8 @@ public class GeneticControllerNEAT : IGeneticController<NeuralNetworkNEAT>
         AssignSpecies();
         MakeNetworks();
     }
+
+
 
     private Genome CrossoverFromSpecies(Species species1, Species species2, System.Random r)
     {

@@ -40,10 +40,9 @@ public class Genome
         InnovationGenerator.SetInnovation(connectionKeys.Count);
     }
 
-    public int GetInnovationsCount()
-    {
-        return connectionList.Count;
-    }
+    public int GetNodesCount() => nodeList.Count;
+    public int GetConnectionsCount() => connectionList.Count;
+
 
     public List<NodeGene> GetNodes()
     {

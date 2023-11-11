@@ -151,7 +151,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
         }
     }
 
-    private void UpdateForNextGeneration()
+    protected virtual void UpdateForNextGeneration()
     {
         species.NextGeneration();
 
