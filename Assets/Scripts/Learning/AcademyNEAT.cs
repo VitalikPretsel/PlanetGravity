@@ -18,18 +18,17 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 
     public float compatibilityThreshold = 3f;
 
-    public float weightMutationChance = 0.8f;
+    public float weightMutationChance = 0.3f;
     public float weightMutationChange = 0.005f;
     public float eachWeightMutationChance = 0.05f;
-    public float randomWeightChance = 0.05f;
+    public float randomWeightChance = 0.0015f;
     public float addNodeChance = 0.001f;
     public float addConnectionChance = 0.0015f;
 
     public float crossoverRate = 0.75f;
     public float interSpeciesCrossoverRate = 0.001f;
 
-
-    public int noFitImproveMaxCount = 100;
+    public int noFitImproveMaxCount = 30;
     public int noFitImproveCount = 0;
 
     //public int maxMutationReducedCount = 4;
@@ -125,6 +124,8 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 
     protected override void UpdateGeneticControllerParameters() 
     {
+        ((GeneticControllerNEAT)species).C1 = C1;
+        ((GeneticControllerNEAT)species).C2 = C2;
         ((GeneticControllerNEAT)species).C3 = C3;
 
         ((GeneticControllerNEAT)species).compatibilityThreshold = compatibilityThreshold;

@@ -11,7 +11,7 @@ public class Academy : AbstractAcademy<NeuralNetwork>
     public float mutationChange = 0.001F;
 
     public bool autoUpdateParameters = false;
-    public int noFitImproveMaxCount = 100;
+    public int noFitImproveMaxCount = 10;
     public int noFitImproveCount = 0;
 
     protected UI_Network networkUI;
