@@ -97,7 +97,7 @@ public class RocketDeath : MonoBehaviour
             if (timeIdleLeft > idleTime)
             {
                 // Been idle for too long
-                Debug.Log("Player Stopped Moving");
+                //Debug.Log("Player Stopped Moving");
                 idle = true;
             }
         }
@@ -118,7 +118,7 @@ public class RocketDeath : MonoBehaviour
             if (timeOldLeft > oldTime)
             {
                 // Lives for too long
-                Debug.Log("Player is too Old");
+                //Debug.Log("Player is too Old");
                 old = true;
             }
         }
@@ -133,7 +133,7 @@ public class RocketDeath : MonoBehaviour
             if (timeStuckLeft > stuckTime)
             {
                 // Been stuck for too long
-                Debug.Log("Player Stuck");
+                //Debug.Log("Player Stuck");
                 stuck = true;
             }
         }
@@ -157,7 +157,7 @@ public class RocketDeath : MonoBehaviour
             if (timeCollideLeft > collideTime)
             {
                 // Was colliding for too long
-                Debug.Log("Player Collided");
+                //Debug.Log("Player Collided");
                 collided = true;
             }
         }
@@ -178,7 +178,7 @@ public class RocketDeath : MonoBehaviour
         // Check to see if rocket is too far away from center
         if (!away && Vector3.Distance(rigidBody.position, centerPosition) > awayDistance)
         {
-            Debug.Log("Player is far away");
+            //Debug.Log("Player is far away");
             away = true;
         }
         else
@@ -194,7 +194,7 @@ public class RocketDeath : MonoBehaviour
             crushCountLeft += 1;
             if (crushCountLeft >= crushCount)
             {
-                Debug.Log("Player Crushed");
+                //Debug.Log("Player Crushed");
                 crushed = true;
             }
         }
@@ -203,7 +203,7 @@ public class RocketDeath : MonoBehaviour
         {
             if (collision.gameObject == destination)
             {
-                Debug.Log("Player Hit the destination");
+                //Debug.Log("Player Hit the destination");
                 hit = true;
             }
         }

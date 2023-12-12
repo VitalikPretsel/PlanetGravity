@@ -61,7 +61,7 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
 
         if (allRocketsDead)
         {
-            Debug.Log("All Rockets Dead");
+            //Debug.Log("All Rockets Dead");
             bestRocket = null;
 
             if (currentExperiment == numExperiment)
@@ -188,12 +188,12 @@ public abstract class AbstractAcademy<T> : MonoBehaviour where T : INeuralNetwor
     {
         if (currentGenome + numSimulate <= numGenomes)
         {
-            Debug.Log("Full Sim");
+            //Debug.Log("Full Sim");
             batchSimulate = numSimulate;
         }
         else
         {
-            Debug.Log("Partial Sim");
+            //Debug.Log("Partial Sim");
             batchSimulate = numGenomes - currentGenome;
         }
 

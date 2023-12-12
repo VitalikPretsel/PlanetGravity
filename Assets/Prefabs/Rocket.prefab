@@ -5177,10 +5177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa70532230f32a4d8edd3f7dbf435d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleTime: 3
-  oldTime: 5
-  stuckTime: 1
-  collideTime: 1
+  idleTime: 0.5
+  oldTime: 1
+  stuckTime: 0.5
+  collideTime: 0.25
   awayDistance: 50
   crushCount: 10
   centerPosition: {x: 0, y: 0, z: 0}
@@ -5207,6 +5207,7 @@ MonoBehaviour:
   rocketGravity: {fileID: 1026480336076205486}
   obstacles: []
   destination: {fileID: 0}
+  numExperiment: 0
   fitness: 0
   bestFitness: 0
   hits: 0

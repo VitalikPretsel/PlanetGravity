@@ -168,9 +168,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa627d4334edfb40a224d6a959d0f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numGenomes: 100
-  numSimulate: 20
-  numExperiment: 1
+  numGenomes: 1000
+  numSimulate: 50
+  numExperiment: 10
   resetPosition: 1
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
   cameraTarget: {fileID: 925159474}
@@ -190,21 +190,22 @@ MonoBehaviour:
   bestGenerationHitsPercent: 0
   Network_GUI: {fileID: 7079019132684391397, guid: e928ec3b33433d5449627878157c179c, type: 3}
   updateNetUI: 0
-  autoUpdateParameters: 1
+  autoUpdateParameters: 0
   C1: 1
   C2: 1
-  C3: 1
-  compatibilityThreshold: 3
-  weightMutationChance: 0.3
-  weightMutationChange: 0.005
-  eachWeightMutationChance: 0.05
+  C3: 3
+  compatibilityThreshold: 4
+  weightMutationChance: 0.8
+  weightMutationChange: 0.01
+  eachWeightMutationChance: 0.01
   randomWeightChance: 0.05
-  addNodeChance: 0.015
-  addConnectionChance: 0.025
+  addNodeChance: 0.03
+  addConnectionChance: 0.05
   crossoverRate: 0.75
   interSpeciesCrossoverRate: 0.001
-  noFitImproveMaxCount: 10
+  noFitImproveMaxCount: 20
   noFitImproveCount: 0
+  speed: 2
   networkUIPrefab: {fileID: 7079019132684391397, guid: 3674a9104dc750540b97c52aa61d994a, type: 3}
   currentColor: {r: 0, g: 0, b: 0, a: 0}
   currentNodesCount: 0

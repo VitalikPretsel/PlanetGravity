@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numGenomes: 30
-  numSimulate: 1
+  numSimulate: 30
   numExperiment: 1
   resetPosition: 1
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
@@ -175,7 +175,10 @@ MonoBehaviour:
   Network_GUI: {fileID: 7079019132684391397, guid: 25f9c8b078b564ac98677da3a1b2d088, type: 3}
   mutationRate: 0.05
   crossoverRate: 0.5
-  mutationChange: 0.001
+  mutationChange: 0.05
+  autoUpdateParameters: 1
+  noFitImproveMaxCount: 50
+  noFitImproveCount: 0
 --- !u!4 &351216995
 Transform:
   m_ObjectHideFlags: 0

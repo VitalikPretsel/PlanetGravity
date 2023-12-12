@@ -61,7 +61,10 @@ public class Academy : AbstractAcademy<NeuralNetwork>
                 if (noFitImproveCount >= noFitImproveMaxCount)
                 {
                     noFitImproveCount = 0;
-                    mutationChange /= 2;
+                    if (mutationRate > mutationChange)
+                        mutationRate /= 2;
+                    else
+                        mutationChange /= 2;
                 }
             }
             else
@@ -69,5 +72,23 @@ public class Academy : AbstractAcademy<NeuralNetwork>
                 noFitImproveCount = 0;
             }
         }
+    }
+
+    protected override void EmptySaves()
+    {
+        base.EmptySaves();
+
+        Directory.CreateDirectory("./Saves/ParamsSaves");
+        Directory.CreateDirectory("./Saves/SpeciesSaves");
+    }
+
+
+    protected override void SaveStats()
+    {
+        base.SaveStats();
+
+        StreamWriter paramsWriter = new StreamWriter("./Saves/ParamsSaves/params.csv", true);
+        paramsWriter.Write($"{mutationChange}, {mutationRate}, {crossoverRate} \n");
+        paramsWriter.Close();
     }
 }

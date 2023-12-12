@@ -96,8 +96,8 @@ public class AIRocketController : MonoBehaviour
     private void CalculateFitness()
     {
         float distance = Vector3.Distance(rocket.rigidBody.position, destination.rigidBody.position);
-        float fitnessValue = 1 / distance;
-        
+        float fitnessValue = 1 / distance; // (100 - distance) / (distance + 5); // 
+
         fitness = fitnessValue;
         if (fitness > bestFitness)
         {

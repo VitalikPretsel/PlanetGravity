@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 {
@@ -29,7 +30,11 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 
 
     public int noFitImproveMaxCount = 100;
-    public int noFitImproveCount = 0; 
+    public int noFitImproveCount = 0;
+
+    //public int maxMutationReducedCount = 4;
+    //public int mutationReducedCount = 0;
+    public float speed = 2;
 
     public GameObject networkUIPrefab;
     private GameObject networkUI;
@@ -120,6 +125,8 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
 
     protected override void UpdateGeneticControllerParameters() 
     {
+        ((GeneticControllerNEAT)species).C3 = C3;
+
         ((GeneticControllerNEAT)species).compatibilityThreshold = compatibilityThreshold;
         ((GeneticControllerNEAT)species).weightMutationChance = weightMutationChance;
         ((GeneticControllerNEAT)species).weightMutationChange = weightMutationChange;
@@ -140,34 +147,8 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
                 {
                     noFitImproveCount = 0;
 
-                    if (addNodeChance > 0.0001)
-                    {
-                        addNodeChance /= 2;
-                    }
-                    else
-                    {
-                        addNodeChance = 0;
-                    }
-
-                    if (addConnectionChance > 0.0001)
-                    {
-                        addConnectionChance /= 2;
-                    }
-                    else
-                    {
-                        addConnectionChance = 0;
-                    }
-
-                    if (randomWeightChance > 0.0001)
-                    {
-                        randomWeightChance /= 2;
-                    }
-                    else
-                    {
-                        randomWeightChance = 0;
-                    }
-
                     if (addNodeChance == 0 && addConnectionChance == 0)
+                    //else
                     {
                         //if (eachWeightMutationChance > 0.01)
                         //{
@@ -182,8 +163,46 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
                         //    eachWeightMutationChance = 0.01;
                         //}
 
-                        weightMutationChange /= 2;
+                        weightMutationChange /= speed;
+                        //C3 *= 100;
+
+                        //if (addNodeChance != 0 || addConnectionChance != 0)
+                        //    mutationReducedCount += 1;
                     }
+                    else
+                    //if (mutationReducedCount == maxMutationReducedCount)
+                    {
+                        if (addNodeChance > 0.0001)
+                        {
+                            addNodeChance /= speed;
+                        }
+                        else
+                        {
+                            addNodeChance = 0;
+                        }
+
+                        if (addConnectionChance > 0.0001)
+                        {
+                            addConnectionChance /= speed;
+                        }
+                        else
+                        {
+                            addConnectionChance = 0;
+                        }
+
+                        if (randomWeightChance > 0.0001)
+                        {
+                            randomWeightChance /= speed;
+                        }
+                        else
+                        {
+                            randomWeightChance = 0;
+                        }
+
+                        //weightMutationChange *= (float)(Math.Pow(speed, mutationReducedCount));
+                        //mutationReducedCount = 0;
+                    }
+
                 }
             }
             else
@@ -207,7 +226,7 @@ public class AcademyNEAT : AbstractAcademy<NeuralNetworkNEAT>
         base.SaveStats();
 
         StreamWriter paramsWriter = new StreamWriter("./Saves/ParamsSaves/params.csv", true);
-        paramsWriter.Write($"{addNodeChance}, {addConnectionChance}, {weightMutationChange} \n");
+        paramsWriter.Write($"{addNodeChance}, {addConnectionChance}, {weightMutationChange}, {weightMutationChance}, {randomWeightChance}, {eachWeightMutationChance}, {crossoverRate}, {interSpeciesCrossoverRate} \n");
         paramsWriter.Close();
 
         StreamWriter speciesWriter = new StreamWriter("./Saves/SpeciesSaves/species.csv", true);

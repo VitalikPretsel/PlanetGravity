@@ -82,7 +82,7 @@ public class NeuralNetwork: INeuralNetwork
         for (int i = 0; i < element.Length; i++)
         {
             encoded.Add(Convert.ToDouble(element[i]));
-            Debug.Log(encoded[i]);
+            //Debug.Log(encoded[i]);
 
         }
 
