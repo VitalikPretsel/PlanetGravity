@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class AIRocketController : MonoBehaviour
 {
-    public NeuralNetwork network = null;
+    public INeuralNetwork network = null;
 
     public RocketTarget rocket;
 
@@ -12,8 +12,7 @@ public class AIRocketController : MonoBehaviour
     public List<GravityTarget> obstacles;
     public GravityTarget destination;
     
-    private int numExperiment;
-    private bool resetPosition;
+    public int numExperiment;
 
     public float fitness;
     public float bestFitness;
@@ -28,10 +27,6 @@ public class AIRocketController : MonoBehaviour
         rocket.rocketDeath.destination = moon;
 
         // obstacles.Add(GameObject.Find("Earth").GetComponent<GravityTarget>());
-
-        var academy = GameObject.Find("Academy").GetComponent<Academy>();
-        numExperiment = academy.numExperiment;
-        resetPosition = academy.resetPosition;
     }
 
     void FixedUpdate()
@@ -101,8 +96,8 @@ public class AIRocketController : MonoBehaviour
     private void CalculateFitness()
     {
         float distance = Vector3.Distance(rocket.rigidBody.position, destination.rigidBody.position);
-        float fitnessValue = 1 / distance;
-        
+        float fitnessValue = 1 / distance; // (100 - distance) / (distance + 5); // 
+
         fitness = fitnessValue;
         if (fitness > bestFitness)
         {
@@ -135,24 +130,16 @@ public class AIRocketController : MonoBehaviour
         rocket.rigidBody.velocity = Vector3.zero;
         rocket.rigidBody.simulated = false;
 
-        network.fitness += bestFitness / numExperiment; // to get avarage for all experiments
+        network.Fitness += bestFitness / numExperiment; // to get avarage for all experiments
+        //network.Fitness = bestFitness;
     }
 
     public void ResetIndividual()
     {
         ResetExperiment();
 
-        network.fitness = 0;
+        network.Fitness = 0;
         hits = 0;
-
-        if (resetPosition)
-        {
-            foreach (var obstacle in obstacles)
-            {
-                obstacle.ResetPosition();
-            }
-            destination.ResetPosition();
-        }
     }
 
     public void ResetExperiment()

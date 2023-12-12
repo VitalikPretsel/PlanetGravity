@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class RocketTarget : MonoBehaviour
@@ -42,6 +44,11 @@ public class RocketTarget : MonoBehaviour
         {
             rigidBody.AddForce(updateVelocityValue * moveVector, ForceMode2D.Impulse);
         }
+    }
+
+    public void UpdateRocketColor(Color color)
+    {
+        this.transform.Find("MapIcon").GetComponent<SpriteRenderer>().color = color;
     }
 
     // cosmetic

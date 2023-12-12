@@ -132,7 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 351216995}
-  - component: {fileID: 351216994}
+  - component: {fileID: 351216996}
+  - component: {fileID: 351216997}
   m_Layer: 0
   m_Name: Academy
   m_TagString: Untagged
@@ -140,45 +141,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &351216994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351216993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7d6852ec9312f048b6bba5e490ff7d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numGenomes: 30
-  numSimulate: 30
-  numExperiment: 1
-  resetPosition: 1
-  rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
-  cameraTarget: {fileID: 925159474}
-  bestRocket: {fileID: 0}
-  currentGenome: 0
-  currentExperiment: 1
-  batchSimulate: 0
-  currentGeneration: 0
-  currentExperimentFitness: 0
-  bestExperimentFitness: 0
-  bestGenomeFitness: 0
-  lastGenerationAverageFitness: 0
-  bestGenerationAverageFitness: 0
-  currentGenomeHitsNumber: 0
-  bestGenomeHitsPercent: 0
-  lastGenerationHitsPercent: 0
-  bestGenerationHitsPercent: 0
-  Network_GUI: {fileID: 7079019132684391397, guid: 25f9c8b078b564ac98677da3a1b2d088, type: 3}
-  mutationRate: 0.05
-  crossoverRate: 0.5
-  mutationChange: 0.05
-  autoUpdateParameters: 1
-  noFitImproveMaxCount: 50
-  noFitImproveCount: 0
 --- !u!4 &351216995
 Transform:
   m_ObjectHideFlags: 0
@@ -194,6 +156,74 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &351216996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351216993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afa627d4334edfb40a224d6a959d0f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numGenomes: 1000
+  numSimulate: 50
+  numExperiment: 10
+  resetPosition: 1
+  rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}
+  cameraTarget: {fileID: 925159474}
+  bestRocket: {fileID: 0}
+  currentGenome: 0
+  currentExperiment: 0
+  batchSimulate: 0
+  currentGeneration: 0
+  currentExperimentFitness: 0
+  bestExperimentFitness: 0
+  bestGenomeFitness: 0
+  lastGenerationAverageFitness: 0
+  bestGenerationAverageFitness: 0
+  currentGenomeHitsNumber: 0
+  bestGenomeHitsPercent: 0
+  lastGenerationHitsPercent: 0
+  bestGenerationHitsPercent: 0
+  Network_GUI: {fileID: 7079019132684391397, guid: e928ec3b33433d5449627878157c179c, type: 3}
+  updateNetUI: 0
+  autoUpdateParameters: 0
+  C1: 1
+  C2: 1
+  C3: 3
+  compatibilityThreshold: 4
+  weightMutationChance: 0.8
+  weightMutationChange: 0.01
+  eachWeightMutationChance: 0.01
+  randomWeightChance: 0.05
+  addNodeChance: 0.03
+  addConnectionChance: 0.05
+  crossoverRate: 0.75
+  interSpeciesCrossoverRate: 0.001
+  noFitImproveMaxCount: 20
+  noFitImproveCount: 0
+  speed: 2
+  networkUIPrefab: {fileID: 7079019132684391397, guid: 3674a9104dc750540b97c52aa61d994a, type: 3}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
+  currentNodesCount: 0
+  currentConnectionsCount: 0
+  averageNodesCount: 0
+  averageConnectionsCount: 0
+--- !u!114 &351216997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351216993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c38745aab3f6eaf47b5392fd2d1f0c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &457671240
 GameObject:
   m_ObjectHideFlags: 0

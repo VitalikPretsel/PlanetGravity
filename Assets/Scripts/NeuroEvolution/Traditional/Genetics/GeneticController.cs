@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class GeneticController
+public class GeneticController: IGeneticController<NeuralNetwork>
 {
-    public List<NeuralNetwork> population;
+    public List<NeuralNetwork> Networks { get; set; } // population
     public List<NeuralNetwork> nextGeneration;
 
     private double populationFitness;
@@ -12,7 +12,7 @@ public class GeneticController
     public float mutationChange;
     public float crossoverRate;
     
-    public float averageFitness;
+    public float AverageFitness { get; set; }
     int popSize;
 
     private delegate List<List<int>> SelectionDelegate(List<NeuralNetwork> population);
@@ -31,22 +31,22 @@ public class GeneticController
         Crossover = CrossoverOperators.UniformCrossover;
         Mutation = MutationOperators.AdditiveMutation;
 
-        this.population = new List<NeuralNetwork>(popSize);
+        this.Networks = new List<NeuralNetwork>(popSize);
         this.populationFitness = 0f;
         this.mutationRate = mutationRate;
         this.crossoverRate = crossoverRate;
         this.mutationChange = mutationChange;
-        this.averageFitness = 0f;
+        this.AverageFitness = 0f;
         this.popSize = popSize;
 
         for (int i = 0; i < popSize; i++)
         {
             // Create NN with specific structure
-            this.population.Add(new NeuralNetwork(new int[] { 8, 7, 3 })); // 8,7,3 // 8,15,15,3 // 8,11,11,3
+            this.Networks.Add(new NeuralNetwork(new int[] { 8, 15, 15, 3 })); // 8,7,3 // 8,15,15,3 // 8,11,11,3
         }
     }
 
-    public NeuralNetwork[] Breed(NeuralNetwork parent1, NeuralNetwork parent2)
+    private NeuralNetwork[] Breed(NeuralNetwork parent1, NeuralNetwork parent2)
     {
         var siblings = new NeuralNetwork[] { 
             new NeuralNetwork(parent1.layerStructure), 
@@ -61,7 +61,7 @@ public class GeneticController
         return siblings;
     }
 
-    public void Mutate(NeuralNetwork creature)
+    private void Mutate(NeuralNetwork creature)
     {
         creature.Decode(
             Mutation(creature.Encode(), mutationRate, mutationChange));
@@ -73,14 +73,14 @@ public class GeneticController
 
         nextGeneration = new List<NeuralNetwork>();
 
-        population.Sort((x, y) => y.fitness.CompareTo(x.fitness));
-        nextGeneration.Add(population[0]);  // to guarantee that best solution survives
+        Networks.Sort((x, y) => y.Fitness.CompareTo(x.Fitness));
+        nextGeneration.Add(Networks[0]);  // to guarantee that best solution survives
 
-        List<List<int>> selectedIndexes = Selection(population);
+        List<List<int>> selectedIndexes = Selection(Networks);
 
         foreach (var parents in selectedIndexes)
         {
-            NeuralNetwork[] children = Breed(population[parents[0]], population[parents[1]]);
+            NeuralNetwork[] children = Breed(Networks[parents[0]], Networks[parents[1]]);
 
             Mutate(children[0]);
             Mutate(children[1]);
@@ -91,18 +91,18 @@ public class GeneticController
 
         for (int i = 1; i < popSize; i++)
         {
-            population[i] = nextGeneration[i];
+            Networks[i] = nextGeneration[i];
         }
     }
 
-    public void CalculateFitnessStats()
+    private void CalculateFitnessStats()
     {
         populationFitness = 0f;
-        for (int i = 0; i < population.Count; i++)
+        for (int i = 0; i < Networks.Count; i++)
         {
-            populationFitness += population[i].fitness;
+            populationFitness += Networks[i].Fitness;
         }
 
-        averageFitness = (float)(populationFitness / population.Count);
+        AverageFitness = (float)(populationFitness / Networks.Count);
     }
 }
