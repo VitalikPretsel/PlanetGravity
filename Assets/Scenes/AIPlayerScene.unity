@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numGenomes: 30
-  numSimulate: 30
+  numSimulate: 10
   numExperiment: 1
   resetPosition: 1
   rocketFab: {fileID: 1026480336076205489, guid: b2f446edd6dc11b4f9981718bf81afd6, type: 3}

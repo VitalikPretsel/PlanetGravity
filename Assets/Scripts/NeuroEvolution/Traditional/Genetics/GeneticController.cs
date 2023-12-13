@@ -42,7 +42,7 @@ public class GeneticController: IGeneticController<NeuralNetwork>
         for (int i = 0; i < popSize; i++)
         {
             // Create NN with specific structure
-            this.Networks.Add(new NeuralNetwork(new int[] { 8, 15, 15, 3 })); // 8,7,3 // 8,15,15,3 // 8,11,11,3
+            this.Networks.Add(new NeuralNetwork(new int[] { 8, 7, 3 })); // 8,7,3 // 8,15,15,3 // 8,11,11,3
         }
     }
 
